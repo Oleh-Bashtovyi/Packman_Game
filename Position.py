@@ -1,7 +1,13 @@
+from typing import Union
+import math
+
 class Position:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+
+    def distance_to(self, other: Union["Position", list, tuple]):
+        return math.sqrt((self.x - other[0]) ** 2 + (self.y - other[1]) ** 2)
 
     def __len__(self):
         return 2
