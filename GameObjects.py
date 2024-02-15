@@ -100,3 +100,16 @@ class Entity(GameObject):
             if collides:
                 break
         return collides
+
+#TODO
+#-Packman:
+# *Make movement for packman like this:
+# *if key pressed (W,A,S,D) - change buffer direction
+# *in tick: move in buffer direction
+# *if no collision with walls - set current direction as buffered
+# *otherwise - return to first position and set buffer direction as current
+#-Ghost:
+# *Blinky(chase player)
+# *Pinky(chase 4 cells ahead of player)
+# *Inky (idk)
+# *Clyde (chase and scatter)
