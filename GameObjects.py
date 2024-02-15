@@ -1,4 +1,5 @@
 from Position import Position
+from Constants import *
 import pygame as pygame
 
 
@@ -43,3 +44,18 @@ class GameObject:
 
     def get_center_position(self) -> Position:
         return self.position + [self._half_size, self._half_size]
+
+
+class Wall(GameObject):
+    def __init__(self, game_state, screen_position: Position):
+        super().__init__(game_state, screen_position, TILE_SIZE, WALL_COLOR)
+
+
+class Apple(GameObject):
+    def __init__(self, game_state, screen_position: Position):
+        super().__init__(game_state, screen_position, APPLE_SIZE, APPLE_COLOR, True)
+
+
+class Powerup(GameObject):
+    def __init__(self, game_state, screen_position: Position):
+        super().__init__(game_state, screen_position, POWERUP_SIZE, POWERUP_COLOR, True)
