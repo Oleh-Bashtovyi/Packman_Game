@@ -59,3 +59,44 @@ class Apple(GameObject):
 class Powerup(GameObject):
     def __init__(self, game_state, screen_position: Position):
         super().__init__(game_state, screen_position, POWERUP_SIZE, POWERUP_COLOR, True)
+
+
+class Entity(GameObject):
+    def __init__(self,
+                 game_state,
+                 screen_position: Position,
+                 obj_size: int,
+                 obj_color: tuple[int, int, int] = (255, 0, 0),
+                 is_circle: bool = False,
+                 entity_image='images/packman.png'):
+        super().__init__(game_state, screen_position, obj_size, obj_color, is_circle)
+        self._current_direction = Direction.NONE
+        self.entity_image = pygame.transform.scale(pygame.image.load(entity_image), (self._size, self._size))
+
+    def tick(self):
+        pass
+
+    def draw(self):
+        self._surface.blit(self.entity_image, self.get_shape())
+
+    def move_in_current_direction(self):
+        self.move_in_direction(self._current_direction)
+
+    def move_in_direction(self, direction: Direction):
+        self.position += get_direction_shift(direction)
+
+    def get_current_direction(self):
+        return self._current_direction
+
+    def set_current_direction(self, direction: Direction):
+        self._current_direction = direction
+
+    def collides_with_wall(self):
+        collision_rect = pygame.Rect(self.get_x(), self.get_y(), self._size, self._size)
+        collides = False
+        walls = self._renderer.get_walls()
+        for wall in walls:
+            collides = collision_rect.colliderect(wall.get_shape())
+            if collides:
+                break
+        return collides
