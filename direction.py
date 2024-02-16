@@ -21,3 +21,7 @@ class Direction(Enum):
             return self.value == other.value
         return False
 
+class ScoreType(Enum):
+    APPLE = 10
+    POWERUP = 50
+    GHOST = 400
