@@ -25,3 +25,9 @@ class ScoreType(Enum):
     APPLE = 10
     POWERUP = 50
     GHOST = 400
+
+class GhostBehaviour(Enum):
+    CHASE = 1
+    SCATTER = 2
+    FREIGHT = 3
+    SPAWN = 4
