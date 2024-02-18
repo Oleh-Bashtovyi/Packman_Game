@@ -1,4 +1,6 @@
 from Position import Position
+from Direction import Direction
+from typing import Tuple
 from Constants import *
 import pygame as pygame
 
@@ -8,7 +10,7 @@ class GameObject:
                  game_state,
                  screen_position: Position,
                  obj_size: int,
-                 obj_color: tuple[int, int, int] = (255, 0, 0),
+                 obj_color: Tuple[int, int, int] = (255, 0, 0),
                  is_circle: bool = False):
         self._size = obj_size
         self._half_size = int(obj_size / 2)
@@ -66,7 +68,7 @@ class Entity(GameObject):
                  game_state,
                  screen_position: Position,
                  obj_size: int,
-                 obj_color: tuple[int, int, int] = (255, 0, 0),
+                 obj_color: Tuple[int, int, int] = (255, 0, 0),
                  is_circle: bool = False,
                  entity_image='images/packman.png'):
         super().__init__(game_state, screen_position, obj_size, obj_color, is_circle)
@@ -83,7 +85,7 @@ class Entity(GameObject):
         self.move_in_direction(self._current_direction)
 
     def move_in_direction(self, direction: Direction):
-        self.position += get_direction_shift(direction)
+        self.position += direction.to_shift()
 
     def get_current_direction(self):
         return self._current_direction
@@ -101,14 +103,15 @@ class Entity(GameObject):
                 break
         return collides
 
-#TODO
-#-Packman:
+
+# TODO
+# -Packman:
 # *Make movement for packman like this:
 # *if key pressed (W,A,S,D) - change buffer direction
 # *in tick: move in buffer direction
 # *if no collision with walls - set current direction as buffered
 # *otherwise - return to first position and set buffer direction as current
-#-Ghost:
+# -Ghost:
 # *Blinky(chase player)
 # *Pinky(chase 4 cells ahead of player)
 # *Inky (idk)

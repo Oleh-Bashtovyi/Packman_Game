@@ -1,42 +1,65 @@
-from typing import List
-from enum import Enum, auto
+from enum import Enum
+
+MAZE = [
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "XP           XX            X",
+    "X XXXX XXXXX XX XXXXX XXXX X",
+    "X XXXXOXXXXX XX XXXXXOXXXX X",
+    "X XXXX XXXXX XX XXXXX XXXX X",
+    "X                          X",
+    "X XXXX XX XXXXXXXX XX XXXX X",
+    "X XXXX XX XXXXXXXX XX XXXX X",
+    "X      XX    XX    XX      X",
+    "XXXXXX XXXXX XX XXXXX XXXXXX",
+    "XXXXXX XXXXX XX XXXXX XXXXXX",
+    "XXXXXX XX     G    XX XXXXXX",
+    "XXXXXX XX XXX  XXX XX XXXXXX",
+    "XXXXXX XX X      X XX XXXXXX",
+    "   G      X      X          ",
+    "XXXXXX XX X      X XX XXXXXX",
+    "XXXXXX XX XXXXXXXX XX XXXXXX",
+    "XXXXXX XX    G     XX XXXXXX",
+    "XXXXXX XX XXXXXXXX XX XXXXXX",
+    "XXXXXX XX XXXXXXXX XX XXXXXX",
+    "X            XX            X",
+    "X XXXX XXXXX XX XXXXX XXXX X",
+    "X XXXX XXXXX XX XXXXX XXXX X",
+    "X   XX       G        XX   X",
+    "XXX XX XX XXXXXXXX XX XX XXX",
+    "XXX XX XX XXXXXXXX XX XX XXX",
+    "X      XX    XX    XX      X",
+    "X XXXXXXXXXX XX XXXXXXXXXX X",
+    "X XXXXXXXXXX XX XXXXXXXXXX X",
+    "X   O                 O    X",
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+]
 
 SCALE_FACTOR = 3
 TILE_SIZE = 8 * SCALE_FACTOR
-APPLE_SIZE = int(TILE_SIZE / 4)
-POWERUP_SIZE = int(TILE_SIZE / 3)
+TILE_HALF = int(TILE_SIZE / 2)
+GHOST_SIZE = int(TILE_SIZE * (3 / 4))
+PACMAN_SIZE = int(TILE_SIZE)
+MAZE_WIDTH = len(MAZE[0])
+MAZE_HEIGHT = len(MAZE)
+SCREEN_WIDTH = MAZE_WIDTH * TILE_SIZE
+SCREEN_HEIGHT = MAZE_HEIGHT * TILE_SIZE
+APPLE_SIZE = int(TILE_SIZE / 6)
+POWERUP_SIZE = int(TILE_SIZE / 4)
+
+# Colors
 WALL_COLOR = (0, 0, 255)
 APPLE_COLOR = (255, 255, 0)
 POWERUP_COLOR = (255, 255, 255)
 
 
-class Direction(Enum):
-    NONE = auto()
-    UP = auto()
-    DOWN = auto()
-    LEFT = auto()
-    RIGHT = auto()
-
-    def opposite(self):
-        if self == Direction.UP:
-            return Direction.DOWN
-        elif self == Direction.DOWN:
-            return Direction.UP
-        elif self == Direction.LEFT:
-            return Direction.RIGHT
-        elif self == Direction.RIGHT:
-            return Direction.LEFT
-        return Direction.NONE
+class ScoreType(Enum):
+    APPLE = 10
+    POWERUP = 50
+    GHOST = 400
 
 
-DIRECTION_DICT = {
-    Direction.NONE: [0, 0],
-    Direction.LEFT: [-1, 0],
-    Direction.RIGHT: [1, 0],
-    Direction.DOWN: [0, 1],
-    Direction.UP: [0, -1]
-}
-
-
-def get_direction_shift(direction: Direction) -> list[int]:
-    return DIRECTION_DICT[direction]
+class GhostBehaviour(Enum):
+    CHASE = 1
+    SCATTER = 2
+    FREIGHT = 3
+    SPAWN = 4
