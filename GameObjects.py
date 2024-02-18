@@ -48,6 +48,12 @@ class GameObject:
     def get_center_position(self) -> Position:
         return self._position + [self._half_size, self._half_size]
 
+    def get_grid_position(self) -> Position:
+        center = self.get_center_position()
+        x = center.x // TILE_SIZE
+        y = center.y // TILE_SIZE
+        return Position(x, y)
+
 
 class Wall(GameObject):
     def __init__(self, game_state, screen_position: Position):
@@ -133,6 +139,7 @@ class Pacman(Entity):
     def __init__(self):
         a = "initialize pacman"
 
+
 # ========================================
 
 
@@ -165,32 +172,46 @@ class Ghost(Entity):
         self.move_in_current_direction()
         self.handle_teleport()
 
-    def start_chase(self):
-        self._mode_controller.start_chase()
+    def _set_chase_target(self):
+        self._current_target = self._pacman.get_center_position()
+
+    def _set_scatter_target(self):
+        self._current_target = self._scatter_position
+
+    def _set_spawn_target(self):
+        self._current_target = self._spawn_position
 
     def start_scatter(self):
         self._mode_controller.start_scatter()
+        if self._mode_controller.get_current_state() is GhostBehaviour.SCATTER:
+            self._move_method = self._move_to_target_method
+            self._set_scatter_target()
+
+    def start_chase(self):
+        self._mode_controller.start_chase()
+        if self._mode_controller.get_current_state() is GhostBehaviour.CHASE:
+            self._move_method = self._move_to_target_method
+            self._set_scatter_target()
 
     def start_spawn(self):
         self._mode_controller.start_spawn()
+        if self._mode_controller.get_current_state() is GhostBehaviour.SPAWN:
+            self._move_method = self._move_to_target_method
+            self._set_spawn_target()
 
     def start_fright(self):
         self._mode_controller.start_fright()
+        if self._mode_controller.get_current_state() is GhostBehaviour.FRIGHT:
+            self._move_method = self._random_move_method
 
     def _handle_states(self):
         state = self._mode_controller.get_current_state()
         if state is GhostBehaviour.SPAWN:
-            self._current_target = self._spawn_position
-            self._move_method = self._move_to_target_method
-        elif state is GhostBehaviour.FRIGHT:
-            self._current_target = self._spawn_position
-            self._move_method = self._random_move_method
+            self._set_spawn_target()
         elif state is GhostBehaviour.SCATTER:
-            self._current_target = self._scatter_position
-            self._move_method = self._move_to_target_method
-        else:
-            self._current_target = self._pacman.get_center_position()
-            self._move_method = self._move_to_target_method
+            self._set_scatter_target()
+        elif state is GhostBehaviour.CHASE:
+            self._set_chase_target()
 
     # методи, які будуть використовуватись для різних станів привидів.
     # В стані страху буде використовуватись метод випадкового напряму.
@@ -208,6 +229,43 @@ class Ghost(Entity):
             self._surface.blit(self._fright_image, self.get_shape())
         else:
             self._surface.blit(self._entity_image, self.get_shape())
+
+
+class RedGhost(Ghost):
+    def __init__(self,
+                 game_state,
+                 screen_position: Position,
+                 spawn_position_in_grid: Position,
+                 scatter_position_in_grid: Position,
+                 obj_size: int,
+                 pacman: Pacman = None):
+        super().__init__(game_state,
+                         screen_position,
+                         spawn_position_in_grid,
+                         scatter_position_in_grid,
+                         obj_size=obj_size,
+                         pacman=pacman,
+                         entity_image=RED_GHOST)
+
+
+class PinkGhost(Ghost):
+    def __init__(self,
+                 game_state,
+                 screen_position: Position,
+                 spawn_position_in_grid: Position,
+                 scatter_position_in_grid: Position,
+                 obj_size: int,
+                 pacman: Pacman = None):
+        super().__init__(game_state,
+                         screen_position,
+                         spawn_position_in_grid,
+                         scatter_position_in_grid,
+                         obj_size=obj_size,
+                         pacman=pacman,
+                         entity_image=PINK_GHOST)
+
+    def _set_chase_target(self):
+        self._current_target = self._pacman.get_grid_position() + 4 * self._pacman.get_current_direction().to_shift()
 
 
 class GhostGroup:

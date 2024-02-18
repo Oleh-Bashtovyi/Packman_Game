@@ -31,15 +31,6 @@ class ModesController:
     def get_current_state(self):
         return self._current_state
 
-    def _handle_time(self):
-        if self._current_state is GhostBehaviour.SCATTER:
-            self._time = self._scatter_time
-        elif self._current_state is GhostBehaviour.FRIGHT:
-            self._time = self._fright_time
-        elif self._current_state is GhostBehaviour.CHASE:
-            self._time = self._chase_time
-        self._reset_timer()
-
     def _reset_timer(self):
         self._timer = 0
 
@@ -48,14 +39,17 @@ class ModesController:
 
     def start_scatter(self):
         self._current_state = GhostBehaviour.SCATTER
-        self._handle_time()
+        self._time = self._scatter_time
+        self._reset_timer()
 
     def start_chase(self):
         self._current_state = GhostBehaviour.CHASE
-        self._handle_time()
+        self._time = self._chase_time
+        self._reset_timer()
 
     def start_fright(self):
         if self._current_state is GhostBehaviour.SPAWN:
             return
         self._current_state = GhostBehaviour.FRIGHT
-        self._handle_time()
+        self._time = self._fright_time
+        self._reset_timer()
