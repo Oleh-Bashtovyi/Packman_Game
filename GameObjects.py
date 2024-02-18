@@ -16,36 +16,36 @@ class GameObject:
         self._half_size = int(obj_size / 2)
         self._renderer = game_state
         self._surface = game_state.get_surface()
-        self.position = screen_position
+        self._position = screen_position
         self._color = obj_color
         self._circle = is_circle
-        self._shape = pygame.Rect(self.position.x, self.position.y, self._size, self._size)
+        self._shape = pygame.Rect(self._position.x, self._position.y, self._size, self._size)
 
     def draw(self):
         if self._circle:
             pygame.draw.circle(self._surface, self._color, (self.get_x(), self.get_y()), self._size)
         else:
-            rect_object = pygame.Rect(self.position.x, self.position.y, self._size, self._size)
+            rect_object = pygame.Rect(self._position.x, self._position.y, self._size, self._size)
             pygame.draw.rect(self._surface, self._color, rect_object, border_radius=3)
 
     def get_x(self):
-        return self.position.x
+        return self._position.x
 
     def get_y(self):
-        return self.position.y
+        return self._position.y
 
     def get_shape(self):
-        return pygame.Rect(self.position.x, self.position.y, self._size, self._size)
+        return pygame.Rect(self._position.x, self._position.y, self._size, self._size)
 
     def set_position(self, position: Position | tuple | list):
-        self.position.x = position[0]
-        self.position.y = position[1]
+        self._position.x = position[0]
+        self._position.y = position[1]
 
     def get_position(self) -> Position:
-        return Position(self.position.x, self.position.y)
+        return Position(self._position.x, self._position.y)
 
     def get_center_position(self) -> Position:
-        return self.position + [self._half_size, self._half_size]
+        return self._position + [self._half_size, self._half_size]
 
 
 class Wall(GameObject):
@@ -85,13 +85,20 @@ class Entity(GameObject):
         self.move_in_direction(self._current_direction)
 
     def move_in_direction(self, direction: Direction):
-        self.position += direction.to_shift()
+        self._position += direction.to_shift()
 
     def get_current_direction(self):
         return self._current_direction
 
     def set_current_direction(self, direction: Direction):
         self._current_direction = direction
+
+    def handle_teleport(self):
+        center = self.get_center_position()
+        if center.x < 0:
+            self.set_position((SCREEN_WIDTH - self._half_size, center.y))
+        elif center.x > SCREEN_WIDTH:
+            self.set_position((-self._half_size, center.y))
 
     def collides_with_wall(self):
         collision_rect = pygame.Rect(self.get_x(), self.get_y(), self._size, self._size)
