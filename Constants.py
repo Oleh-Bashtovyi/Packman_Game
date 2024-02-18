@@ -46,10 +46,23 @@ SCREEN_HEIGHT = MAZE_HEIGHT * TILE_SIZE
 APPLE_SIZE = int(TILE_SIZE / 6)
 POWERUP_SIZE = int(TILE_SIZE / 4)
 
+# Ghost behaviour
+SCATTER_TIME = 7
+CHASE_TIME = 20
+FRIGHT_TIME = 10
+
 # Colors
 WALL_COLOR = (0, 0, 255)
 APPLE_COLOR = (255, 255, 0)
 POWERUP_COLOR = (255, 255, 255)
+
+# Images
+RED_GHOST = "images/redghost.png"
+PINK_GHOST = "images/redghost.png"
+BLUE_GHOST = "images/redghost.png"
+ORANGE_GHOST = "images/redghost.png"
+SCARED_GHOST = "images/redghost.png"
+DEAD_GHOST = "images/redghost.png"
 
 
 class ScoreType(Enum):
@@ -61,5 +74,5 @@ class ScoreType(Enum):
 class GhostBehaviour(Enum):
     CHASE = 1
     SCATTER = 2
-    FREIGHT = 3
+    FRIGHT = 3
     SPAWN = 4
