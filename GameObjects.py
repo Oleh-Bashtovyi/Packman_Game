@@ -1,6 +1,7 @@
 from Position import Position
 from Direction import Direction
 from typing import Tuple
+from ModesController import ModesController
 from Constants import *
 import pygame as pygame
 
@@ -73,13 +74,13 @@ class Entity(GameObject):
                  entity_image='images/packman.png'):
         super().__init__(game_state, screen_position, obj_size, obj_color, is_circle)
         self._current_direction = Direction.NONE
-        self.entity_image = pygame.transform.scale(pygame.image.load(entity_image), (self._size, self._size))
+        self._entity_image = pygame.transform.scale(pygame.image.load(entity_image), (self._size, self._size))
 
     def tick(self, dt):
         pass
 
     def draw(self):
-        self._surface.blit(self.entity_image, self.get_shape())
+        self._surface.blit(self._entity_image, self.get_shape())
 
     def move_in_current_direction(self):
         self.move_in_direction(self._current_direction)
@@ -133,28 +134,49 @@ class Ghost(Entity):
                  obj_color: Tuple[int, int, int] = (255, 0, 0),
                  is_circle: bool = False,
                  entity_image=RED_GHOST):
-        super().__init__(game_state, screen_position, obj_size, obj_color, is_circle)
-        self.point
+        super().__init__(game_state, screen_position, obj_size, obj_color, is_circle, entity_image)
+        self._mode_controller: ModesController = ModesController()
+        self._fright_image = pygame.transform.scale(pygame.image.load(SCARED_GHOST), (self._size, self._size))
+        self._dead_image = pygame.transform.scale(pygame.image.load(DEAD_GHOST), (self._size, self._size))
 
     def tick(self, dt):
-        pass
+        self._mode_controller.update(dt)
+        self.move_in_current_direction()
+        self.handle_teleport()
 
     def start_chase(self):
-        pass
+        self._mode_controller.start_chase()
 
     def start_scatter(self):
-        pass
+        self._mode_controller.start_scatter()
 
     def start_spawn(self):
-        pass
+        self._mode_controller.start_spawn()
 
-    def start_freight(self):
-        pass
+    def start_fright(self):
+        self._mode_controller.start_fright()
+
+    def draw(self):
+        state = self._mode_controller.get_current_state()
+        if state is GhostBehaviour.SPAWN:
+            self._surface.blit(self._dead_image, self.get_shape())
+        elif state is GhostBehaviour.FRIGHT:
+            self._surface.blit(self._fright_image, self.get_shape())
+        else:
+            self._surface.blit(self._entity_image, self.get_shape())
 
 
 class GhostGroup:
     def __init__(self):
-        self._ghosts: Tuple[Ghost, Ghost, Ghost, Ghost] = (None, None, None, None)
+        self._red_ghost: Ghost = None
+        self._pink_ghost: Ghost = None
+        self._blue_ghost: Ghost = None
+        self._orange_ghost: Ghost = None
+        self._ghosts: Tuple[Ghost, Ghost, Ghost, Ghost] = (
+            self._red_ghost,
+            self._pink_ghost,
+            self._orange_ghost,
+            self._orange_ghost)
         self._current_points: int = ScoreType.GHOST.value
 
     def draw(self):
@@ -175,8 +197,9 @@ class GhostGroup:
         self._current_points = ScoreType.GHOST.value
 
     def start_freight(self):
+        self.reset_points()
         for ghost in self._ghosts:
-            ghost.start_freight()
+            ghost.start_fright()
 
     def start_chase(self):
         for ghost in self._ghosts:
