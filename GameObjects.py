@@ -126,11 +126,24 @@ class Entity(GameObject):
 # *Clyde (chase and scatter)
 
 
+# TODO:
+# FOR SASHA
+# ========================================
+class Pacman(Entity):
+    def __init__(self):
+        a = "initialize pacman"
+
+# ========================================
+
+
 class Ghost(Entity):
     def __init__(self,
                  game_state,
                  screen_position: Position,
+                 spawn_position_in_grid: Position,
+                 scatter_position_in_grid: Position,
                  obj_size: int,
+                 pacman: Pacman = None,
                  obj_color: Tuple[int, int, int] = (255, 0, 0),
                  is_circle: bool = False,
                  entity_image=RED_GHOST):
@@ -138,9 +151,17 @@ class Ghost(Entity):
         self._mode_controller: ModesController = ModesController()
         self._fright_image = pygame.transform.scale(pygame.image.load(SCARED_GHOST), (self._size, self._size))
         self._dead_image = pygame.transform.scale(pygame.image.load(DEAD_GHOST), (self._size, self._size))
+        self._spawn_position: Position = spawn_position_in_grid
+        self._scatter_position: Position = scatter_position_in_grid
+        self._current_target: Position = scatter_position_in_grid
+        self._move_method = self._move_to_target_method
+        self._pacman = pacman
+        self._handle_states()
 
     def tick(self, dt):
         self._mode_controller.update(dt)
+        self._handle_states()
+        self._move_method()
         self.move_in_current_direction()
         self.handle_teleport()
 
@@ -155,6 +176,29 @@ class Ghost(Entity):
 
     def start_fright(self):
         self._mode_controller.start_fright()
+
+    def _handle_states(self):
+        state = self._mode_controller.get_current_state()
+        if state is GhostBehaviour.SPAWN:
+            self._current_target = self._spawn_position
+            self._move_method = self._move_to_target_method
+        elif state is GhostBehaviour.FRIGHT:
+            self._current_target = self._spawn_position
+            self._move_method = self._random_move_method
+        elif state is GhostBehaviour.SCATTER:
+            self._current_target = self._scatter_position
+            self._move_method = self._move_to_target_method
+        else:
+            self._current_target = self._pacman.get_center_position()
+            self._move_method = self._move_to_target_method
+
+    # методи, які будуть використовуватись для різних станів привидів.
+    # В стані страху буде використовуватись метод випадкового напряму.
+    def _move_to_target_method(self):
+        pass
+
+    def _random_move_method(self):
+        pass
 
     def draw(self):
         state = self._mode_controller.get_current_state()

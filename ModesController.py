@@ -55,5 +55,7 @@ class ModesController:
         self._handle_time()
 
     def start_fright(self):
+        if self._current_state is GhostBehaviour.SPAWN:
+            return
         self._current_state = GhostBehaviour.FRIGHT
         self._handle_time()
