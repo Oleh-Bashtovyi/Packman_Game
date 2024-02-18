@@ -75,7 +75,7 @@ class Entity(GameObject):
         self._current_direction = Direction.NONE
         self.entity_image = pygame.transform.scale(pygame.image.load(entity_image), (self._size, self._size))
 
-    def tick(self):
+    def tick(self, dt):
         pass
 
     def draw(self):
@@ -123,3 +123,65 @@ class Entity(GameObject):
 # *Pinky(chase 4 cells ahead of player)
 # *Inky (idk)
 # *Clyde (chase and scatter)
+
+
+class Ghost(Entity):
+    def __init__(self,
+                 game_state,
+                 screen_position: Position,
+                 obj_size: int,
+                 obj_color: Tuple[int, int, int] = (255, 0, 0),
+                 is_circle: bool = False,
+                 entity_image=RED_GHOST):
+        super().__init__(game_state, screen_position, obj_size, obj_color, is_circle)
+        self.point
+
+    def tick(self, dt):
+        pass
+
+    def start_chase(self):
+        pass
+
+    def start_scatter(self):
+        pass
+
+    def start_spawn(self):
+        pass
+
+    def start_freight(self):
+        pass
+
+
+class GhostGroup:
+    def __init__(self):
+        self._ghosts: Tuple[Ghost, Ghost, Ghost, Ghost] = (None, None, None, None)
+        self._current_points: int = ScoreType.GHOST.value
+
+    def draw(self):
+        for ghost in self._ghosts:
+            ghost.draw()
+
+    def tick(self, dt):
+        for ghost in self._ghosts:
+            ghost.tick(dt)
+
+    def update_points(self):
+        self._current_points *= 2
+
+    def get_points(self):
+        return self._current_points
+
+    def reset_points(self):
+        self._current_points = ScoreType.GHOST.value
+
+    def start_freight(self):
+        for ghost in self._ghosts:
+            ghost.start_freight()
+
+    def start_chase(self):
+        for ghost in self._ghosts:
+            ghost.start_chase()
+
+    def start_scatter(self):
+        for ghost in self._ghosts:
+            ghost.start_scatter()

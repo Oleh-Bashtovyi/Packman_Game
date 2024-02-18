@@ -51,6 +51,14 @@ WALL_COLOR = (0, 0, 255)
 APPLE_COLOR = (255, 255, 0)
 POWERUP_COLOR = (255, 255, 255)
 
+# Images
+RED_GHOST = "images/redghost.png"
+PINK_GHOST = "images/redghost.png"
+BLUE_GHOST = "images/redghost.png"
+ORANGE_GHOST = "images/redghost.png"
+SCARED_GHOST = "images/redghost.png"
+DEAD_GHOST = "images/redghost.png"
+
 
 class ScoreType(Enum):
     APPLE = 10
