@@ -1,6 +1,9 @@
+import random
+
 from Position import Position
 from Direction import Direction
-from typing import Tuple
+from typing import Tuple, List
+import random
 from ModesController import ModesController
 from Constants import *
 import pygame as pygame
@@ -216,10 +219,30 @@ class Ghost(Entity):
     # методи, які будуть використовуватись для різних станів привидів.
     # В стані страху буде використовуватись метод випадкового напряму.
     def _move_to_target_method(self):
-        pass
+        directions = self._get_movable_directions()
+
+        if len(directions) == 1:
+            self.set_current_direction(directions[0][0])
+        else:
+            self.set_current_direction(directions[0][0])
 
     def _random_move_method(self):
-        pass
+        directions = self._get_movable_directions()
+        self.set_current_direction(random.choice(directions)[0][0])
+
+
+    def _get_movable_directions(self) -> List[(Direction, Position)]:
+        all_directions = (self._renderer.mazeController
+                          .get_node_at_position(self.get_grid_position())
+                          .get_walkable_positions())
+
+        opposite_direction = self._current_direction.opposite()
+        walkable_directions = [tup for tup in all_directions if tup[0] != opposite_direction]
+
+        if len(walkable_directions) == 0:
+            walkable_directions.append((Direction.NONE, self.get_grid_position()))
+
+        return  walkable_directions
 
     def draw(self):
         state = self._mode_controller.get_current_state()

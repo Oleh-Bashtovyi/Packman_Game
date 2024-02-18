@@ -33,5 +33,5 @@ class MazeController:
     def __init__(self):
         self.something = 1
 
-    def _get_node_at_position(self, position: Position):
+    def get_node_at_position(self, position: Position):
         pass
