@@ -29,3 +29,19 @@ class Position:
                 raise ValueError("Input list or tuple must have exactly 2 elements")
         else:
             raise TypeError("Unsupported operand type")
+
+    def distance(position):
+        x1 = position.x
+        y1 = position.y
+        x2 = self.x
+        y2 = self.y
+    
+    
+        dx = x2 - x1
+        dy = y2 - y1
+        squared_distance = dx**2 + dy**2
+    
+        distance = math.sqrt(squared_distance)
+    
+        return distance
+
