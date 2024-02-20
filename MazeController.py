@@ -42,7 +42,6 @@ class MazeController:
         node2 = self.nodes.get(position2)
         if node1 and node2:
             node1.add_neighbour(direction, node2)
-            # Припускаючи, що лабіринт без напрямку, додаємо зв'язок у обидві сторони.
             opposite_direction = self.opposite(direction)
             node2.add_neighbour(opposite_direction, node1)
 
@@ -52,7 +51,6 @@ class MazeController:
             for x, cell in row:
                 position = Position(x, y)
                 self.add_node(position)
-                # Перевірка сусідів
                 if (x > 0 and row[x-1] != 'X'):
                     self.add_edge(position, Position(x - 1, y), Direction.LEFT)
                 if (x < len(row) - 1 and row[x+1] != 'X'):
