@@ -57,12 +57,12 @@ APPLE_COLOR = (255, 255, 0)
 POWERUP_COLOR = (255, 255, 255)
 
 # Images
-RED_GHOST = "images/redghost.png"
-PINK_GHOST = "images/redghost.png"
-BLUE_GHOST = "images/redghost.png"
-ORANGE_GHOST = "images/redghost.png"
-SCARED_GHOST = "images/redghost.png"
-DEAD_GHOST = "images/redghost.png"
+RED_GHOST = "images/ghost_red.png"
+PINK_GHOST = "images/ghost_pink.png"
+BLUE_GHOST = "images/ghost_blue.png"
+ORANGE_GHOST = "images/ghost_orange.png"
+SCARED_GHOST = "images/ghost_scared.png"
+DEAD_GHOST = "images/ghost_dead.png"
 
 
 class ScoreType(Enum):

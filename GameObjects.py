@@ -176,13 +176,19 @@ class Ghost(Entity):
         self.handle_teleport()
 
     def _set_chase_target(self):
-        self._current_target = self._pacman.get_grid_position()
+        self._set_target(self._pacman.get_grid_position())
 
     def _set_scatter_target(self):
-        self._current_target = self._scatter_position
+        self._set_target(self._scatter_position)
 
     def _set_spawn_target(self):
-        self._current_target = self._spawn_position
+        self._set_target(self._spawn_position)
+
+    def _set_target(self, target: Position):
+        self._current_target = target
+
+    def _get_target(self) -> Position:
+        return self._current_target
 
     def start_scatter(self):
         self._mode_controller.start_scatter()
@@ -224,7 +230,17 @@ class Ghost(Entity):
         if len(directions) == 1:
             self.set_current_direction(directions[0][0])
         else:
-            self.set_current_direction(directions[0][0])
+            target_position = self._get_target()
+            current_best_direction = directions[0][0]
+            current_best_distance = 1000000
+            for direction_item in directions:
+                current_direction = direction_item[0]
+                current_position = direction_item[1]
+                current_distance = current_position.distance_to(target_position)
+                if current_distance < current_best_distance:
+                    current_best_distance = current_distance
+                    current_best_direction = current_direction
+            self.set_current_direction(current_best_direction)
 
     def _random_move_method(self):
         directions = self._get_movable_directions()
@@ -328,7 +344,7 @@ class OrangeGhost(Ghost):
                          scatter_position_in_grid,
                          obj_size=obj_size,
                          pacman=pacman,
-                         entity_image=BLUE_GHOST)
+                         entity_image=ORANGE_GHOST)
 
     def _set_chase_target(self):
         if self.get_grid_position().distance_to(self._pacman.get_grid_position()) > 8:
@@ -347,28 +363,27 @@ class GhostGroup:
         pink_screen_position = pink_ghost_spawn_position * TILE_SIZE
         blue_screen_position = blue_ghost_spawn_position * TILE_SIZE
         orange_screen_position = orange_ghost_spawn_position * TILE_SIZE
-
-        self._red_ghost: Ghost = RedGhost(game_state,
-                                          red_screen_position,
-                                          red_ghost_spawn_position,
-                                          red_ghost_scatter_position,
-                                          GHOST_SIZE, packman)
-        self._pink_ghost: Ghost = PINK_GHOST(game_state,
-                                             pink_screen_position,
-                                             pink_ghost_spawn_position,
-                                             pink_ghost_scatter_position,
+        self._red_ghost: RedGhost = RedGhost(game_state,
+                                             red_screen_position,
+                                             red_ghost_spawn_position,
+                                             red_ghost_scatter_position,
                                              GHOST_SIZE, packman)
-        self._blue_ghost: Ghost = BlueGhost(game_state,
-                                            blue_screen_position,
-                                            blue_ghost_spawn_position,
-                                            blue_ghost_scatter_position,
-                                            GHOST_SIZE,
-                                            packman, self._red_ghost)
-        self._orange_ghost: Ghost = OrangeGhost(game_state,
-                                                orange_screen_position,
-                                                orange_ghost_spawn_position,
-                                                orange_ghost_scatter_position,
+        self._pink_ghost: PinkGhost = PinkGhost(game_state,
+                                                pink_screen_position,
+                                                pink_ghost_spawn_position,
+                                                pink_ghost_scatter_position,
                                                 GHOST_SIZE, packman)
+        self._blue_ghost: BlueGhost = BlueGhost(game_state,
+                                                blue_screen_position,
+                                                blue_ghost_spawn_position,
+                                                blue_ghost_scatter_position,
+                                                GHOST_SIZE,
+                                                packman, self._red_ghost)
+        self._orange_ghost: OrangeGhost = OrangeGhost(game_state,
+                                                      orange_screen_position,
+                                                      orange_ghost_spawn_position,
+                                                      orange_ghost_scatter_position,
+                                                      GHOST_SIZE, packman)
         self._ghosts: Tuple[Ghost, Ghost, Ghost, Ghost] = (
             self._red_ghost,
             self._pink_ghost,
