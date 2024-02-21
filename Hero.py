@@ -14,3 +14,9 @@ class Hero(Entity):
         self.closed = pygame.image.load("images/man.png")
         self.image = self.open
         self.mouth_open = True
+
+    ###############################
+
+
+    def set_direction(self, dir):
+        self.bufferDirection = dir
