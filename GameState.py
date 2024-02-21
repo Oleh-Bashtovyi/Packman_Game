@@ -1,6 +1,7 @@
 from GameObjects import *
 import pygame
 from Constants import *
+from Hero import *
 
 class GameState:
     def __init__(self, maze_controller):
@@ -51,4 +52,32 @@ class GameState:
         self.ghsotGroup.resetScore()
         self.ghsotGroup.startFreight()
 
+    def set_won(self):
+        self._won = True
+
+    def get_won(self):
+        return self._won
+
+    def add_score(self, in_score: ScoreType):
+        self._score += in_score.value
+
+    def get_hero_position(self):
+        return self._hero.get_position() if self._hero is not None else (0, 0)
+
+
+    def end_game(self):
+        if self._hero in self._game_objects:
+            self._game_objects.remove(self._hero)
+        self._hero = None
+
+    def kill_pacman(self):
+        self._lives -= 1
+        self._hero.set_position(TILE_SIZE, TILE_SIZE)
+        self._hero.set_direction(Direction.NONE)
+        if self._lives == 0: self.end_game()
+
+    def display_text(self, text, in_position=(32, 0), in_size=30):
+        font = pygame.font.SysFont('Arial', in_size)
+        text_surface = font.render(text, False, (255, 255, 255))
+        self._screen.blit(text_surface, in_position)
 
