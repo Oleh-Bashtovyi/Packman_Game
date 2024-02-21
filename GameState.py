@@ -1,4 +1,4 @@
-from GameObjects import GhostGroup
+from GameObjects import *
 import pygame
 from Constants import *
 
@@ -30,3 +30,25 @@ class GameState:
         self._mode_switch_event = pygame.USEREVENT + 1  # custom event
         self._powerup_end_event = pygame.USEREVENT + 2
         self._pakupaku_event = pygame.USEREVENT + 3
+
+    def add_game_object(self, obj: GameObject):
+        self._game_objects.append(obj)
+
+    def add_cookie(self, obj: GameObject):
+        self._game_objects.append(obj)
+        self._cookies.append(obj)
+
+    def add_ghost(self, obj: GameObject):
+        self._game_objects.append(obj)
+        self._ghosts.append(obj)
+
+    def add_powerup(self, obj: GameObject):
+        self._game_objects.append(obj)
+        self._powerups.append(obj)
+
+    def activate_powerup(self):
+        self.ghsotGroup.reset()
+        self.ghsotGroup.resetScore()
+        self.ghsotGroup.startFreight()
+
+
