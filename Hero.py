@@ -1,6 +1,8 @@
 import pygame
 from Constants import *
 from GameObjects import Entity
+from GameObjects import Ghost
+from Direction import Direction
 from Position import *
 
 
@@ -9,37 +11,48 @@ class Hero(Entity):
                  game_state,
                  spawn_position: Position):
         super().__init__(game_state, spawn_position, PACMAN_SIZE, (255, 255, 0), False)
+        self.buffer_direction = self._current_direction
         self.last_non_colliding_position = (0, 0)
-        self.open = pygame.image.load("images/pacman_open.png")
-        self.closed = pygame.image.load("images/pacman_close.png")
+        self.open = pygame.transform.scale(pygame.image.load("images/pacman_open.png"),(self._size, self._size))
+        self.closed = pygame.transform.scale(pygame.image.load("images/pacman_close.png"), (self._size, self._size))
         self.image = self.open
         self.mouth_open = True
 
-    
-
     def tick(self, dt):
-
-        prevPosition = self.GetCurrentPosition()
-
-        self.MoveInDirection(self.BufferDirectin)
-
-        if(self.CollideWithWall()):
-            self.set_position(prevPosition)
-            self.bufferDirection =  self.current_direction
+        #якщо буфер відрізняється, то гравець нажав клавішу і змінив напрям
+        if self.buffer_direction != self._current_direction:
+            #якщо вдалось піти в тому напрямі, що вказав користувач
+            if self._try_move_in_direction(self.buffer_direction):
+                self._current_direction = self.buffer_direction
+            #інакше пробуємо йти в старому напрямі
+            else:
+                self.buffer_direction = self._current_direction
+                self._try_move_in_direction(self._current_direction)
+        #інакше продовжуємо йти в поточному напрямі
         else:
-            self.current_direction = self.bufferDirection
+            self._try_move_in_direction(self._current_direction)
 
-        self.handleTeleport()
+        self.handle_teleport()
         self.handle_cookie_pickup()
         self.handle_ghosts()
 
-    ################################
+    def _try_move_in_direction(self, direction: Direction) -> bool:
+        prev_position = self.get_position()
+        self.move_in_direction(direction)
 
-    def set_direction(self, dir):
-        self.bufferDirection = dir
+        if self.collides_with_wall():
+            self.set_position(prev_position)
+            return False
+            #self.buffer_direction = self._current_direction
+        else:
+            return True
+            #self._current_direction = self.buffer_direction
+
+    def set_direction(self, direction: Direction):
+        self.buffer_direction = direction
 
     def handle_cookie_pickup(self):
-        collision_rect = pygame.Rect(self.x, self.y, self._size, self._size)
+        collision_rect = pygame.Rect(self._position.x, self._position.y, self._size, self._size)
         cookies = self._renderer.get_cookies()
         powerups = self._renderer.get_powerups()
         game_objects = self._renderer.get_game_objects()
@@ -60,27 +73,25 @@ class Hero(Entity):
         for powerup in powerups:
             collides = collision_rect.colliderect(powerup.get_shape())
             if collides and powerup in game_objects:
-                if not self._renderer.is_powerup_active():
-                    game_objects.remove(powerup)
-                    self._renderer.add_score(ScoreType.POWERUP)
-                    self._renderer.activate_powerup()
+                game_objects.remove(powerup)
+                self._renderer.add_score(ScoreType.POWERUP)
+                self._renderer.activate_powerup()
 
     def handle_ghosts(self):
-        collision_rect = pygame.Rect(self.x, self.y, self._size, self._size)
-        ghosts = self._renderer.get_ghosts()
-        game_objects = self._renderer.get_game_objects()
+        collision_rect = self.get_shape()
+        ghosts = self._renderer.get_ghost_group().get_ghosts()
         for ghost in ghosts:
             collides = collision_rect.colliderect(ghost.get_shape())
-            if collides and ghost in game_objects:
-                if self._renderer.is_powerup_active():
-                    game_objects.remove(ghost)
-                    self._renderer.add_score(ghost.points)
-
+            if collides:
+                if ghost.get_current_state() is GhostBehaviour.FRIGHT:
+                    self._renderer.add_score(self._renderer.ghostGroup.get_points())
+                    self._renderer.ghostGroup.update_points()
+                    ghosts.start_spawn()
                 else:
                     if not self._renderer.get_won():
                         self._renderer.kill_pacman()
 
     def draw(self):
         self.image = self.open if self.mouth_open else self.closed
-        self.image = pygame.transform.rotate(self.image, self.current_direction.To_angle())
-        super(Hero, self).draw()
+        self.image = pygame.transform.rotate(self.image, self._current_direction.to_angle())
+        self._surface.blit(self.image, self.get_shape())

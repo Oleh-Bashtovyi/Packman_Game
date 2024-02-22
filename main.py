@@ -20,20 +20,18 @@ if __name__ == "__main__":
 
     for i, row in enumerate(MAZE):
         for j, column in enumerate(row):
+            vect = translate_maze_to_screen((j, i))
             if MAZE[i][j] == "X":
-                vect = translate_maze_to_screen((i, j))
                 wall = Wall(game_state, vect)
                 game_state.add_wall(wall)
             elif MAZE[i][j] == "P":
-                vect = translate_maze_to_screen((i, j))
                 powerup = Powerup(game_state, vect)
                 game_state.add_powerup(powerup)
             else:
-                vect = translate_maze_to_screen((i, j))
                 apple = Apple(game_state, vect)
                 game_state.add_apple(apple)
 
-    pacman = Hero(game_state, Position(2, 2))
+    pacman = Hero(game_state, translate_maze_to_screen(Position(1, 1)))
     ghostGroup = GhostGroup(game_state, pacman,
                             Position(15, 13), Position(2, 27),
                             Position(15, 16), Position(2, 2),

@@ -68,6 +68,9 @@ class GameState:
     def set_ghost_group(self, group: GhostGroup):
         self.ghostGroup = group
 
+    def get_ghost_group(self) -> GhostGroup:
+        return self.ghostGroup
+
     def add_powerup(self, obj: GameObject):
         self._game_objects.append(obj)
         self._powerups.append(obj)

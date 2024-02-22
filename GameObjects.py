@@ -27,7 +27,7 @@ class GameObject:
 
     def draw(self):
         if self._circle:
-            pygame.draw.circle(self._surface, self._color, (self.get_x(), self.get_y()), self._size)
+            pygame.draw.circle(self._surface, self._color, self.get_position() + [TILE_HALF, TILE_HALF], self._size)
         else:
             rect_object = pygame.Rect(self._position.x, self._position.y, self._size, self._size)
             pygame.draw.rect(self._surface, self._color, rect_object, border_radius=3)
@@ -175,6 +175,9 @@ class Ghost(Entity):
         self.move_in_current_direction()
         self.handle_teleport()
 
+    def get_current_state(self):
+        return self._mode_controller.get_current_state()
+
     def _set_chase_target(self):
         self._set_target(self._pacman.get_grid_position())
 
@@ -244,7 +247,7 @@ class Ghost(Entity):
 
     def _random_move_method(self):
         directions = self._get_movable_directions()
-        self.set_current_direction(random.choice(directions)[0][0])
+        self.set_current_direction(random.choice(directions)[0])
 
     def _get_movable_directions(self) -> list[(Direction, Position)]:
         all_directions = (self._renderer.maze_controller
@@ -398,6 +401,9 @@ class GhostGroup:
     def tick(self, dt):
         for ghost in self._ghosts:
             ghost.tick(dt)
+
+    def get_ghosts(self) -> tuple[Ghost]:
+        return self._ghosts[:]
 
     def update_points(self):
         self._current_points *= 2
