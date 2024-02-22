@@ -1,4 +1,5 @@
 from enum import Enum
+from Position import *
 
 MAZE = [
     "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
@@ -76,3 +77,10 @@ class GhostBehaviour(Enum):
     SCATTER = 2
     FRIGHT = 3
     SPAWN = 4
+
+def translate_screen_to_maze(coordinates: Position | tuple[int, int]):
+    return Position(int(coordinates[0] / TILE_SIZE), int(coordinates[1] / TILE_SIZE))
+
+
+def translate_maze_to_screen(coordinates):
+    return Position(coordinates[0] * TILE_SIZE, coordinates[1] * TILE_SIZE)
