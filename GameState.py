@@ -106,3 +106,29 @@ class GameState:
     def add_hero(self, in_hero):
         self.add_game_object(in_hero)
         self._hero = in_hero
+
+    def _handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self._done = True
+
+            if event.type == self._mode_switch_event:
+                self.handle_mode_switch()
+
+            #if event.type == self._powerup_end_event:
+            #    self._powerup_active = False
+
+            if event.type == self._pakupaku_event:
+                if self._hero is None: break
+                self._hero.mouth_open = not self._hero.mouth_open
+
+        pressed = pygame.key.get_pressed()
+        if self._hero is None: return
+        if pressed[pygame.K_UP]:
+            self._hero.set_direction(Direction.UP)
+        elif pressed[pygame.K_LEFT]:
+            self._hero.set_direction(Direction.LEFT)
+        elif pressed[pygame.K_DOWN]:
+            self._hero.set_direction(Direction.DOWN)
+        elif pressed[pygame.K_RIGHT]:
+            self._hero.set_direction(Direction.RIGHT)
