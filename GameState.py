@@ -81,3 +81,30 @@ class GameState:
         text_surface = font.render(text, False, (255, 255, 255))
         self._screen.blit(text_surface, in_position)
 
+    def is_powerup_active(self):
+        return self._powerup_active
+
+    def add_wall(self, obj: Wall):
+        self.add_game_object(obj)
+        self._walls.append(obj)
+
+    def get_walls(self):
+        return self._walls
+
+    def get_cookies(self):
+        return self._cookies
+
+    def get_ghosts(self) -> list[Ghost]:
+        return self._ghosts
+
+    def get_powerups(self):
+        return self._powerups
+
+    def get_game_objects(self):
+        return self._game_objects
+
+    def add_hero(self, in_hero):
+        self.add_game_object(in_hero)
+        self._hero = in_hero
+
+
