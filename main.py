@@ -1,4 +1,9 @@
+from ast import Constant
 import pygame
+from MazeController import *
+from Constants import *
+from GameState import *
+
 
 # TODO
 # - Вся логіка запуску в нас буде тут.
@@ -9,5 +14,31 @@ import pygame
 # - Ваша ціль: GameState, MazeController, Pacman, зчиування лабіринту, обробка подій підбору powerup\apple.
 # - Привиди знаходяться в ghost group, в якій треба викликати методи оновлення. але вона поки має пустих привидів.
 
-if __name__ == '__main__':
-    print("Bye")
+
+if __name__ == "__main__":
+   mazeController = MazeController()
+   mazeController.read_maze()
+   game_state= GameState(mazeController)
+
+   for i, row in enumerate(MAZE):
+     for j, column in enumerate(MAZE):
+        if(MAZE[i][j] == "X"):
+            vect = translate_maze_to_screen((i,j))
+            wall = Wall(game_state, vect)
+            game_state.add_wall(wall)
+        elif(MAZE[i][j] == "P"):
+            vect = translate_maze_to_screen((i,j))
+            powerup = Powerup(game_state, vect)
+            game_state.add_powerup(powerup)
+        else:
+            vect = translate_maze_to_screen((i,j))
+            apple = Apple(game_state, vect)
+            game_state.add_apple(apple)
+
+   pacman = Hero(game_state, Position(2,2))
+   ghostGroup = GhostGroup(game_state, Position(15,13), Position(2,27), Position(15,16), Position(2,2), Position(16,13), Position(30,2), Position(16,16), Position(30,27))
+   game_state.add_hero(pacman)
+   game_state.add_ghost_group(ghostGroup)
+
+   game_state.Tick(120)
+
