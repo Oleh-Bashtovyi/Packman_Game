@@ -50,3 +50,11 @@ class Position:
     def __mul__(self, scalar):
         return Position(self.x * scalar, self.y * scalar)
 
+    def __eq__(self, other):
+        if isinstance(other, Position):
+            return self.x == other.x and self.y == other.y
+        return False
+
+    def __hash__(self):
+        return hash((self.x, self.y))
+
