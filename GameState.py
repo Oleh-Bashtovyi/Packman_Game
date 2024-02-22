@@ -31,7 +31,7 @@ class GameState:
 
     def tick(self, in_fps: int):
         black = (0,0,0)
-        self.GhostGroup.startScatter()
+        self.GhostGroup.StartScatter()
         pygame.time.set_timer(self._pakupaku_event, 200)  # open close mouth
         while not self._done:
 
@@ -54,11 +54,14 @@ class GameState:
             self._handle_events()
         print("Game over")
 
+    def get_surface(self):
+        return self._screen
+
 
     def add_game_object(self, obj: GameObject):
         self._game_objects.append(obj)
 
-    def add_cookie(self, obj: GameObject):
+    def add_apple(self, obj: GameObject):
         self._game_objects.append(obj)
         self._cookies.append(obj)
 
@@ -117,8 +120,8 @@ class GameState:
     def get_cookies(self):
         return self._cookies
 
-    def get_ghosts(self) -> list[Ghost]:
-        return self._ghosts
+    def set_ghost_group(self, ghostgroup) -> list[Ghost]:
+        self.ghostgroup=ghostgroup
 
     def get_powerups(self):
         return self._powerups
