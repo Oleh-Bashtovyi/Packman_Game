@@ -80,7 +80,7 @@ class Entity(GameObject):
                  obj_size: int,
                  obj_color: Tuple[int, int, int] = (255, 0, 0),
                  is_circle: bool = False,
-                 entity_image='images/packman.png'):
+                 entity_image='images/pacman_open.png'):
         super().__init__(game_state, screen_position, obj_size, obj_color, is_circle)
         self._current_direction = Direction.NONE
         self._entity_image = pygame.transform.scale(pygame.image.load(entity_image), (self._size, self._size))
