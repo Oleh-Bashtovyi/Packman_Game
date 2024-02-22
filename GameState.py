@@ -20,14 +20,11 @@ class GameState:
         self._powerups = []
         self._ghosts = []
         self._hero: Hero = None
-        self.ghsotGroup = ()
+        self.ghostGroup = None
         self._lives = 3
         self._score = 0
-        self._score_cookie_pickup = 10
         self._score_ghost_eaten = 400
         self._score_powerup_pickup = 50
-        self._powerup_active = False  # powerup, special ability
-        self._current_mode = GhostBehaviour.SCATTER
         self._mode_switch_event = pygame.USEREVENT + 1  # custom event
         self._powerup_end_event = pygame.USEREVENT + 2
         self._pakupaku_event = pygame.USEREVENT + 3
