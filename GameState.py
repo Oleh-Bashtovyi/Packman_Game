@@ -32,6 +32,32 @@ class GameState:
         self._powerup_end_event = pygame.USEREVENT + 2
         self._pakupaku_event = pygame.USEREVENT + 3
 
+    def tick(self, in_fps: int):
+        black = (0,0,0)
+        self.GhostGroup.startScatter()
+        pygame.time.set_timer(self._pakupaku_event, 200)  # open close mouth
+        while not self._done:
+
+            dt = self._clock.tick(in_fps) / 1000.0
+            self.ghsotGroup.Tick(dt)
+
+            if self._hero is not None:
+                self._hero.tick(dt)
+
+            for obj in self._game_objects:
+                obj.draw()
+
+            self.display_text(f"[Score: {self._score}]  [Lives: {self._lives}]")
+
+            if self._hero is None: self.display_text("YOU DIED", (self._width / 2 - 256, self._height / 2 - 256), 100)
+            if self.get_won(): self.display_text("YOU WON", (self._width / 2 - 256, self._height / 2 - 256), 100)
+            pygame.display.flip()
+            self._clock.tick(in_fps)
+            self._screen.fill(black)
+            self._handle_events()
+        print("Game over")
+
+
     def add_game_object(self, obj: GameObject):
         self._game_objects.append(obj)
 
@@ -114,10 +140,7 @@ class GameState:
 
             if event.type == self._mode_switch_event:
                 self.handle_mode_switch()
-
-            #if event.type == self._powerup_end_event:
-            #    self._powerup_active = False
-
+                
             if event.type == self._pakupaku_event:
                 if self._hero is None: break
                 self._hero.mouth_open = not self._hero.mouth_open
