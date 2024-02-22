@@ -25,7 +25,9 @@ class ModesController:
 
         if self._current_state is GhostBehaviour.CHASE:
             self.start_scatter()
-        elif self._current_state is GhostBehaviour.CHASE:
+        elif self._current_state is GhostBehaviour.SCATTER:
+            self.start_chase()
+        elif self._current_state is GhostBehaviour.FRIGHT:
             self.start_chase()
 
     def get_current_state(self):

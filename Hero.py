@@ -61,7 +61,7 @@ class Hero(Entity):
             collides = collision_rect.colliderect(cookie.get_shape())
             if collides and cookie in game_objects:
                 game_objects.remove(cookie)
-                self._renderer.add_score(ScoreType.APPLE)
+                self._renderer.add_score(ScoreType.APPLE.value)
                 cookie_to_remove = cookie
 
         if cookie_to_remove is not None:
@@ -74,7 +74,7 @@ class Hero(Entity):
             collides = collision_rect.colliderect(powerup.get_shape())
             if collides and powerup in game_objects:
                 game_objects.remove(powerup)
-                self._renderer.add_score(ScoreType.POWERUP)
+                self._renderer.add_score(ScoreType.POWERUP.value)
                 self._renderer.activate_powerup()
 
     def handle_ghosts(self):
@@ -86,8 +86,8 @@ class Hero(Entity):
                 if ghost.get_current_state() is GhostBehaviour.FRIGHT:
                     self._renderer.add_score(self._renderer.ghostGroup.get_points())
                     self._renderer.ghostGroup.update_points()
-                    ghosts.start_spawn()
-                else:
+                    ghost.start_spawn()
+                elif ghost.get_current_state() is not GhostBehaviour.SPAWN:
                     if not self._renderer.get_won():
                         self._renderer.kill_pacman()
 

@@ -22,7 +22,7 @@ class GameState:
         self._ghosts = []
         self._hero: Hero = None
         self.ghostGroup: GhostGroup = None
-        self._lives = 3
+        self._lives = 6
         self._score = 0
         self._score_ghost_eaten = 400
         self._score_powerup_pickup = 50
@@ -44,6 +44,8 @@ class GameState:
 
             for obj in self._game_objects:
                 obj.draw()
+            self.ghostGroup.draw()
+
 
             self.display_text(f"[Score: {self._score}]  [Lives: {self._lives}]")
 
@@ -85,8 +87,8 @@ class GameState:
     def get_won(self):
         return self._won
 
-    def add_score(self, in_score: ScoreType):
-        self._score += in_score.value
+    def add_score(self, in_score: int):
+        self._score += in_score
 
     def get_hero_position(self):
         return self._hero.get_position() if self._hero is not None else (0, 0)

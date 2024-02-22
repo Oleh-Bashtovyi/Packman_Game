@@ -106,9 +106,9 @@ class Entity(GameObject):
     def handle_teleport(self):
         center = self.get_center_position()
         if center.x < 0:
-            self.set_position((SCREEN_WIDTH - self._half_size, center.y))
+            self.set_position((SCREEN_WIDTH - self._half_size, self.get_y()))
         elif center.x > SCREEN_WIDTH:
-            self.set_position((-self._half_size, center.y))
+            self.set_position((-self._half_size, self.get_y()))
 
     def collides_with_wall(self):
         collision_rect = pygame.Rect(self.get_x(), self.get_y(), self._size, self._size)
@@ -171,7 +171,10 @@ class Ghost(Entity):
     def tick(self, dt):
         self._mode_controller.update(dt)
         self._handle_states()
-        self._move_method()
+        if (self._current_direction is Direction.NONE or
+                (self.get_x() % TILE_SIZE == 0 and
+                self.get_y() % TILE_SIZE == 0)):
+            self._move_method()
         self.move_in_current_direction()
         self.handle_teleport()
 
@@ -216,10 +219,17 @@ class Ghost(Entity):
         if self._mode_controller.get_current_state() is GhostBehaviour.FRIGHT:
             self._move_method = self._random_move_method
 
+    def is_at_spawn_position(self) -> bool:
+        grid_position = self.get_grid_position()
+        return self._spawn_position.x == grid_position.x and self._spawn_position.y == grid_position.y
+
     def _handle_states(self):
         state = self._mode_controller.get_current_state()
         if state is GhostBehaviour.SPAWN:
-            self._set_spawn_target()
+            if self.is_at_spawn_position():
+                self.start_chase()
+            else:
+                self._set_spawn_target()
         elif state is GhostBehaviour.SCATTER:
             self._set_scatter_target()
         elif state is GhostBehaviour.CHASE:
@@ -391,7 +401,7 @@ class GhostGroup:
             self._red_ghost,
             self._pink_ghost,
             self._orange_ghost,
-            self._orange_ghost)
+            self._blue_ghost)
         self._current_points: int = ScoreType.GHOST.value
 
     def draw(self):

@@ -3,9 +3,9 @@ from Position import *
 
 MAZE = [
     "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "XP           XX            X",
+    "X            XX            X",
     "X XXXX XXXXX XX XXXXX XXXX X",
-    "X XXXXOXXXXX XX XXXXXOXXXX X",
+    "X XXXXPXXXXX XX XXXXXPXXXX X",
     "X XXXX XXXXX XX XXXXX XXXX X",
     "X                          X",
     "X XXXX XX XXXXXXXX XX XXXX X",
@@ -13,32 +13,32 @@ MAZE = [
     "X      XX    XX    XX      X",
     "XXXXXX XXXXX XX XXXXX XXXXXX",
     "XXXXXX XXXXX XX XXXXX XXXXXX",
-    "XXXXXX XX     G    XX XXXXXX",
-    "XXXXXX XX XXX  XXX XX XXXXXX",
-    "XXXXXX XX X      X XX XXXXXX",
-    "   G      X      X          ",
-    "XXXXXX XX X      X XX XXXXXX",
+    "XXXXXX XX          XX XXXXXX",
+    "XXXXXX XX XX XX XX XX XXXXXX",
+    "XXXXXX XX XX    XX XX XXXXXX",
+    "          XXXXXXXX          ",
     "XXXXXX XX XXXXXXXX XX XXXXXX",
-    "XXXXXX XX    G     XX XXXXXX",
+    "XXXXXX XX XXXXXXXX XX XXXXXX",
+    "XXXXXX XX          XX XXXXXX",
     "XXXXXX XX XXXXXXXX XX XXXXXX",
     "XXXXXX XX XXXXXXXX XX XXXXXX",
     "X            XX            X",
     "X XXXX XXXXX XX XXXXX XXXX X",
     "X XXXX XXXXX XX XXXXX XXXX X",
-    "X   XX       G        XX   X",
+    "X   XX                XX   X",
     "XXX XX XX XXXXXXXX XX XX XXX",
     "XXX XX XX XXXXXXXX XX XX XXX",
     "X      XX    XX    XX      X",
     "X XXXXXXXXXX XX XXXXXXXXXX X",
     "X XXXXXXXXXX XX XXXXXXXXXX X",
-    "X   O                 O    X",
+    "X   P                 P    X",
     "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 ]
 
 SCALE_FACTOR = 3
 TILE_SIZE = 8 * SCALE_FACTOR
 TILE_HALF = int(TILE_SIZE / 2)
-GHOST_SIZE = int(TILE_SIZE * (3 / 4))
+GHOST_SIZE = TILE_SIZE
 PACMAN_SIZE = int(TILE_SIZE)
 MAZE_WIDTH = len(MAZE[0])
 MAZE_HEIGHT = len(MAZE)
