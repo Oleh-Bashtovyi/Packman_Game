@@ -20,7 +20,7 @@ if __name__ == "__main__":
    game_state= GameState(mazeController)
 
    for i, row in enumerate(MAZE):
-     for j, column in enumerate(MAZE):
+     for j, column in enumerate(row):
         if(MAZE[i][j] == "X"):
             vect = translate_maze_to_screen((i,j))
             wall = Wall(game_state, vect)
@@ -35,9 +35,9 @@ if __name__ == "__main__":
             game_state.add_apple(apple)
 
    pacman = Hero(game_state, Position(2,2))
-   ghostGroup = GhostGroup(game_state, Position(15,13), Position(2,27), Position(15,16), Position(2,2), Position(16,13), Position(30,2), Position(16,16), Position(30,27))
+   ghostGroup = GhostGroup(game_state, pacman, Position(15,13), Position(2,27), Position(15,16), Position(2,2), Position(16,13), Position(30,2), Position(16,16), Position(30,27))
    game_state.add_hero(pacman)
-   game_state.add_ghost_group(ghostGroup)
+   game_state.add_ghost(ghostGroup)
 
-   game_state.Tick(120)
+   game_state.tick(120)
 
