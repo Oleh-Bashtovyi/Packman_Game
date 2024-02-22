@@ -47,3 +47,23 @@ class Hero(Entity):
                     game_objects.remove(powerup)
                     self._renderer.add_score(ScoreType.POWERUP)
                     self._renderer.activate_powerup()
+
+    def handle_ghosts(self):
+        collision_rect = pygame.Rect(self.x, self.y, self._size, self._size)
+        ghosts = self._renderer.get_ghosts()
+        game_objects = self._renderer.get_game_objects()
+        for ghost in ghosts:
+            collides = collision_rect.colliderect(ghost.get_shape())
+            if collides and ghost in game_objects:
+                if self._renderer.is_powerup_active():
+                    game_objects.remove(ghost)
+                    self._renderer.add_score(ghost.points)
+
+                else:
+                    if not self._renderer.get_won():
+                        self._renderer.kill_pacman()
+
+    def draw(self):
+        self.image = self.open if self.mouth_open else self.closed
+        self.image = pygame.transform.rotate(self.image, self.current_direction.To_angle())
+        super(Hero, self).draw()
