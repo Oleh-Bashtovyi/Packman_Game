@@ -15,8 +15,25 @@ class Hero(Entity):
         self.image = self.open
         self.mouth_open = True
 
-    ###############################
+    
 
+    def tick(self, dt):
+
+        prevPosition = self.GetCurrentPosition()
+
+        self.MoveInDirection(self.BufferDirectin)
+
+        if(self.CollideWithWall()):
+            self.set_position(prevPosition)
+            self.bufferDirection =  self.current_direction
+        else:
+            self.current_direction = self.bufferDirection
+
+        self.handleTeleport()
+        self.handle_cookie_pickup()
+        self.handle_ghosts()
+
+    ################################
 
     def set_direction(self, dir):
         self.bufferDirection = dir
