@@ -16,7 +16,7 @@ from GameState import *
 
 if __name__ == "__main__":
    mazeController = MazeController()
-   mazeController.read_maze()
+   mazeController.read_maze(MAZE)
    game_state= GameState(mazeController)
 
    for i, row in enumerate(MAZE):
