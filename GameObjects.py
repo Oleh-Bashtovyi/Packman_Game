@@ -247,7 +247,7 @@ class Ghost(Entity):
         self.set_current_direction(random.choice(directions)[0][0])
 
     def _get_movable_directions(self) -> list[(Direction, Position)]:
-        all_directions = (self._renderer.mazeController
+        all_directions = (self._renderer.maze_controller
                           .get_node_at_position(self.get_grid_position())
                           .get_walkable_positions())
 

@@ -3,6 +3,7 @@ import pygame
 from Constants import *
 from Hero import *
 
+
 class GameState:
     def __init__(self, maze_controller):
         pygame.init()
@@ -20,7 +21,7 @@ class GameState:
         self._powerups = []
         self._ghosts = []
         self._hero: Hero = None
-        self.ghostGroup = None
+        self.ghostGroup: GhostGroup = None
         self._lives = 3
         self._score = 0
         self._score_ghost_eaten = 400
@@ -30,13 +31,13 @@ class GameState:
         self._pakupaku_event = pygame.USEREVENT + 3
 
     def tick(self, in_fps: int):
-        black = (0,0,0)
-        self.GhostGroup.StartScatter()
+        black = (0, 0, 0)
+        self.ghostGroup.start_scatter()
         pygame.time.set_timer(self._pakupaku_event, 200)  # open close mouth
         while not self._done:
 
             dt = self._clock.tick(in_fps) / 1000.0
-            self.ghsotGroup.Tick(dt)
+            self.ghostGroup.tick(dt)
 
             if self._hero is not None:
                 self._hero.tick(dt)
@@ -57,7 +58,6 @@ class GameState:
     def get_surface(self):
         return self._screen
 
-
     def add_game_object(self, obj: GameObject):
         self._game_objects.append(obj)
 
@@ -65,18 +65,16 @@ class GameState:
         self._game_objects.append(obj)
         self._cookies.append(obj)
 
-    def add_ghost(self, obj: GameObject):
-        self._game_objects.append(obj)
-        self._ghosts.append(obj)
+    def set_ghost_group(self, group: GhostGroup):
+        self.ghostGroup = group
 
     def add_powerup(self, obj: GameObject):
         self._game_objects.append(obj)
         self._powerups.append(obj)
 
     def activate_powerup(self):
-        self.ghsotGroup.reset()
-        self.ghsotGroup.resetScore()
-        self.ghsotGroup.startFreight()
+        self.ghostGroup.reset_points()
+        self.ghostGroup.start_freight()
 
     def set_won(self):
         self._won = True
@@ -90,7 +88,6 @@ class GameState:
     def get_hero_position(self):
         return self._hero.get_position() if self._hero is not None else (0, 0)
 
-
     def end_game(self):
         if self._hero in self._game_objects:
             self._game_objects.remove(self._hero)
@@ -98,7 +95,7 @@ class GameState:
 
     def kill_pacman(self):
         self._lives -= 1
-        self._hero.set_position(TILE_SIZE, TILE_SIZE)
+        self._hero.set_position(Position(TILE_SIZE, TILE_SIZE))
         self._hero.set_direction(Direction.NONE)
         if self._lives == 0: self.end_game()
 
@@ -106,9 +103,6 @@ class GameState:
         font = pygame.font.SysFont('Arial', in_size)
         text_surface = font.render(text, False, (255, 255, 255))
         self._screen.blit(text_surface, in_position)
-
-    def is_powerup_active(self):
-        return self._powerup_active
 
     def add_wall(self, obj: Wall):
         self.add_game_object(obj)
@@ -119,9 +113,6 @@ class GameState:
 
     def get_cookies(self):
         return self._cookies
-
-    def set_ghost_group(self, ghostgroup) -> list[Ghost]:
-        self.ghostgroup=ghostgroup
 
     def get_powerups(self):
         return self._powerups
@@ -140,7 +131,7 @@ class GameState:
 
             if event.type == self._mode_switch_event:
                 self.handle_mode_switch()
-                
+
             if event.type == self._pakupaku_event:
                 if self._hero is None: break
                 self._hero.mouth_open = not self._hero.mouth_open

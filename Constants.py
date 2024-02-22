@@ -78,6 +78,7 @@ class GhostBehaviour(Enum):
     FRIGHT = 3
     SPAWN = 4
 
+
 def translate_screen_to_maze(coordinates: Position | tuple[int, int]):
     return Position(int(coordinates[0] / TILE_SIZE), int(coordinates[1] / TILE_SIZE))
 
