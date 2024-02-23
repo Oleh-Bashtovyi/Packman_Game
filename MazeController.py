@@ -26,9 +26,6 @@ class MazeController:
         self.powerup_spaces = []
         self.reachable_spaces = []
         self.ghost_spawns = []
-        # self.size = (0, 0)
-        # self.convert_maze_to_numpy()
-        # self.p = Pathfinder(self.numpy_maze)
         self.nodes: Dict[Position, MazeNode] = {}
 
     def add_node(self, position: Position):

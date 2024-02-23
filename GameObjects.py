@@ -1,8 +1,6 @@
-import random
-
-from Position import Position
+import Hero
 from Direction import Direction
-from typing import Tuple, List
+from typing import Tuple
 import random
 from ModesController import ModesController
 from Constants import *
@@ -135,17 +133,6 @@ class Entity(GameObject):
 # *Clyde (chase and scatter)
 
 
-# TODO:
-# FOR SASHA
-# ========================================
-class Pacman(Entity):
-    def __init__(self):
-        a = "initialize pacman"
-
-
-# ========================================
-
-
 class Ghost(Entity):
     def __init__(self,
                  game_state,
@@ -153,7 +140,7 @@ class Ghost(Entity):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
-                 pacman: Pacman = None,
+                 pacman: Hero = None,
                  obj_color: Tuple[int, int, int] = (255, 0, 0),
                  is_circle: bool = False,
                  entity_image=RED_GHOST):
@@ -164,17 +151,19 @@ class Ghost(Entity):
         self._spawn_position: Position = spawn_position_in_grid
         self._scatter_position: Position = scatter_position_in_grid
         self._current_target: Position = scatter_position_in_grid
-        self._move_method = self._move_to_target_method
+        self._select_direction_method = self._move_to_target_method
         self._pacman = pacman
         self._handle_states()
 
     def tick(self, dt):
         self._mode_controller.update(dt)
         self._handle_states()
+
+        #якщо напряму ще нема, або привид стоїть ЧІТКО на плитці
         if (self._current_direction is Direction.NONE or
                 (self.get_x() % TILE_SIZE == 0 and
-                self.get_y() % TILE_SIZE == 0)):
-            self._move_method()
+                 self.get_y() % TILE_SIZE == 0)):
+            self._select_direction_method()
         self.move_in_current_direction()
         self.handle_teleport()
 
@@ -199,25 +188,25 @@ class Ghost(Entity):
     def start_scatter(self):
         self._mode_controller.start_scatter()
         if self._mode_controller.get_current_state() is GhostBehaviour.SCATTER:
-            self._move_method = self._move_to_target_method
+            self._select_direction_method = self._move_to_target_method
             self._set_scatter_target()
 
     def start_chase(self):
         self._mode_controller.start_chase()
         if self._mode_controller.get_current_state() is GhostBehaviour.CHASE:
-            self._move_method = self._move_to_target_method
+            self._select_direction_method = self._move_to_target_method
             self._set_scatter_target()
 
     def start_spawn(self):
         self._mode_controller.start_spawn()
         if self._mode_controller.get_current_state() is GhostBehaviour.SPAWN:
-            self._move_method = self._move_to_target_method
+            self._select_direction_method = self._move_to_target_method
             self._set_spawn_target()
 
     def start_fright(self):
         self._mode_controller.start_fright()
         if self._mode_controller.get_current_state() is GhostBehaviour.FRIGHT:
-            self._move_method = self._random_move_method
+            self._select_direction_method = self._random_move_method
 
     def is_at_spawn_position(self) -> bool:
         grid_position = self.get_grid_position()
@@ -289,7 +278,7 @@ class RedGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
-                 pacman: Pacman = None):
+                 pacman: Hero = None):
         super().__init__(game_state,
                          screen_position,
                          spawn_position_in_grid,
@@ -306,7 +295,7 @@ class PinkGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
-                 pacman: Pacman = None):
+                 pacman: Hero = None):
         super().__init__(game_state,
                          screen_position,
                          spawn_position_in_grid,
@@ -326,7 +315,7 @@ class BlueGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
-                 pacman: Pacman = None,
+                 pacman: Hero = None,
                  red_ghost: RedGhost = None):
         super().__init__(game_state,
                          screen_position,
@@ -350,7 +339,7 @@ class OrangeGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
-                 pacman: Pacman = None):
+                 pacman: Hero = None):
         super().__init__(game_state,
                          screen_position,
                          spawn_position_in_grid,
