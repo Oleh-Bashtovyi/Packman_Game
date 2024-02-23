@@ -43,10 +43,8 @@ class Hero(Entity):
         if self.collides_with_wall():
             self.set_position(prev_position)
             return False
-            #self.buffer_direction = self._current_direction
         else:
             return True
-            #self._current_direction = self.buffer_direction
 
     def set_direction(self, direction: Direction):
         self.buffer_direction = direction

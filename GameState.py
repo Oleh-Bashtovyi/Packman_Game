@@ -10,7 +10,6 @@ class GameState:
         self._width = SCREEN_WIDTH
         self._height = SCREEN_HEIGHT
         self._screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        pygame.display.set_caption('Pacman')
         self._clock = pygame.time.Clock()
         self._done = False
         self._won = False
@@ -26,14 +25,12 @@ class GameState:
         self._score = 0
         self._score_ghost_eaten = 400
         self._score_powerup_pickup = 50
-        self._mode_switch_event = pygame.USEREVENT + 1  # custom event
-        self._powerup_end_event = pygame.USEREVENT + 2
-        self._pakupaku_event = pygame.USEREVENT + 3
+        self._mouth_open_close_event = pygame.USEREVENT + 1
 
     def tick(self, in_fps: int):
         black = (0, 0, 0)
         self.ghostGroup.start_scatter()
-        pygame.time.set_timer(self._pakupaku_event, 200)  # open close mouth
+        pygame.time.set_timer(self._mouth_open_close_event, 200)  # open close mouth
         while not self._done:
 
             dt = self._clock.tick(in_fps) / 1000.0
@@ -46,11 +43,12 @@ class GameState:
                 obj.draw()
             self.ghostGroup.draw()
 
-
             self.display_text(f"[Score: {self._score}]  [Lives: {self._lives}]")
 
-            if self._hero is None: self.display_text("YOU DIED", (self._width / 2 - 256, self._height / 2 - 256), 100)
-            if self.get_won(): self.display_text("YOU WON", (self._width / 2 - 256, self._height / 2 - 256), 100)
+            if self._hero is None:
+                self.display_text("YOU DIED", (self._width / 2 - 256, self._height / 2 - 256), 100)
+            if self.get_won():
+                self.display_text("YOU WON", (self._width / 2 - 256, self._height / 2 - 256), 100)
             pygame.display.flip()
             self._clock.tick(in_fps)
             self._screen.fill(black)
@@ -89,9 +87,6 @@ class GameState:
 
     def add_score(self, in_score: int):
         self._score += in_score
-
-    def get_hero_position(self):
-        return self._hero.get_position() if self._hero is not None else (0, 0)
 
     def end_game(self):
         if self._hero in self._game_objects:
@@ -134,11 +129,9 @@ class GameState:
             if event.type == pygame.QUIT:
                 self._done = True
 
-            if event.type == self._mode_switch_event:
-                self.handle_mode_switch()
-
-            if event.type == self._pakupaku_event:
-                if self._hero is None: break
+            if event.type == self._mouth_open_close_event:
+                if self._hero is None:
+                    break
                 self._hero.mouth_open = not self._hero.mouth_open
 
         pressed = pygame.key.get_pressed()
