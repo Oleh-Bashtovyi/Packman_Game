@@ -1,4 +1,3 @@
-import Hero
 from Direction import Direction
 from typing import Tuple
 import random
@@ -119,20 +118,6 @@ class Entity(GameObject):
         return collides
 
 
-# TODO
-# -Packman:
-# *Make movement for packman like this:
-# *if key pressed (W,A,S,D) - change buffer direction
-# *in tick: move in buffer direction
-# *if no collision with walls - set current direction as buffered
-# *otherwise - return to first position and set buffer direction as current
-# -Ghost:
-# *Blinky(chase player)
-# *Pinky(chase 4 cells ahead of player)
-# *Inky (idk)
-# *Clyde (chase and scatter)
-
-
 class Ghost(Entity):
     def __init__(self,
                  game_state,
@@ -140,7 +125,7 @@ class Ghost(Entity):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
-                 pacman: Hero = None,
+                 pacman=None,
                  obj_color: Tuple[int, int, int] = (255, 0, 0),
                  is_circle: bool = False,
                  entity_image=RED_GHOST):
@@ -148,6 +133,7 @@ class Ghost(Entity):
         self._mode_controller: ModesController = ModesController()
         self._fright_image = pygame.transform.scale(pygame.image.load(SCARED_GHOST), (self._size, self._size))
         self._dead_image = pygame.transform.scale(pygame.image.load(DEAD_GHOST), (self._size, self._size))
+        self._alive_image = pygame.transform.scale(pygame.image.load(entity_image), (self._size, self._size))
         self._spawn_position: Position = spawn_position_in_grid
         self._scatter_position: Position = scatter_position_in_grid
         self._current_target: Position = scatter_position_in_grid
@@ -159,7 +145,7 @@ class Ghost(Entity):
         self._mode_controller.update(dt)
         self._handle_states()
 
-        #якщо напряму ще нема, або привид стоїть ЧІТКО на плитці
+        # якщо напряму ще нема, або привид стоїть ЧІТКО на плитці
         if (self._current_direction is Direction.NONE or
                 (self.get_x() % TILE_SIZE == 0 and
                  self.get_y() % TILE_SIZE == 0)):
@@ -264,11 +250,12 @@ class Ghost(Entity):
     def draw(self):
         state = self._mode_controller.get_current_state()
         if state is GhostBehaviour.SPAWN:
-            self._surface.blit(self._dead_image, self.get_shape())
+            self._entity_image = self._dead_image
         elif state is GhostBehaviour.FRIGHT:
-            self._surface.blit(self._fright_image, self.get_shape())
+            self._entity_image = self._fright_image
         else:
-            self._surface.blit(self._entity_image, self.get_shape())
+            self._entity_image = self._alive_image
+        super().draw()
 
 
 class RedGhost(Ghost):
@@ -278,7 +265,7 @@ class RedGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
-                 pacman: Hero = None):
+                 pacman=None):
         super().__init__(game_state,
                          screen_position,
                          spawn_position_in_grid,
@@ -295,7 +282,7 @@ class PinkGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
-                 pacman: Hero = None):
+                 pacman=None):
         super().__init__(game_state,
                          screen_position,
                          spawn_position_in_grid,
@@ -315,7 +302,7 @@ class BlueGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
-                 pacman: Hero = None,
+                 pacman=None,
                  red_ghost: RedGhost = None):
         super().__init__(game_state,
                          screen_position,
@@ -339,7 +326,7 @@ class OrangeGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
-                 pacman: Hero = None):
+                 pacman=None):
         super().__init__(game_state,
                          screen_position,
                          spawn_position_in_grid,

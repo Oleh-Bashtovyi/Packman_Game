@@ -1,5 +1,6 @@
 from enum import Enum
 from Position import *
+import os
 
 MAZE = [
     "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
@@ -57,13 +58,20 @@ WALL_COLOR = (0, 0, 255)
 APPLE_COLOR = (255, 255, 0)
 POWERUP_COLOR = (255, 255, 255)
 
+
 # Images
-RED_GHOST = "images/ghost_red.png"
-PINK_GHOST = "images/ghost_pink.png"
-BLUE_GHOST = "images/ghost_blue.png"
-ORANGE_GHOST = "images/ghost_orange.png"
-SCARED_GHOST = "images/ghost_scared.png"
-DEAD_GHOST = "images/ghost_dead.png"
+def __get_relative_image_path(filename):
+    return os.path.join("images", filename)
+
+
+RED_GHOST = __get_relative_image_path("ghost_red.png")
+PINK_GHOST = __get_relative_image_path("ghost_pink.png")
+BLUE_GHOST = __get_relative_image_path("ghost_blue.png")
+ORANGE_GHOST = __get_relative_image_path("ghost_orange.png")
+SCARED_GHOST = __get_relative_image_path("ghost_scared.png")
+DEAD_GHOST = __get_relative_image_path("ghost_dead.png")
+PACMAN_MOUTH_OPEN = __get_relative_image_path("pacman_open.png")
+PACMAN_MOUTH_CLOSED = __get_relative_image_path("pacman_close.png")
 
 
 class ScoreType(Enum):
