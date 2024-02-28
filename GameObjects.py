@@ -1,15 +1,8 @@
-#import Constants
-import MazeController
-from ModesController import ModesController
-from Constants import GhostBehaviour
-from Constants import ScoreType
-from Constants import RED_GHOST, BLUE_GHOST, PINK_GHOST, ORANGE_GHOST, SCARED_GHOST, DEAD_GHOST
+from Constants import RED_GHOST
 from Constants import APPLE_COLOR, POWERUP_COLOR, APPLE_SIZE, POWERUP_SIZE, WALL_COLOR
 from Direction import Direction
 from Position import Position
 from typing import Tuple
-#import Constants
-import random
 import pygame as pygame
 
 
@@ -27,9 +20,11 @@ class GameObject:
         self._position = screen_position
         self._color = obj_color
         self._circle = is_circle
-        self._shape = pygame.Rect(self._position.x, self._position.y, self._size, self._size)
 
     def draw(self):
+        """
+        Draws object on screen. Call on every pygame frame.
+        """
         if self._circle:
             tile_half = self._renderer.TILE_HALF
             pygame.draw.circle(self._surface, self._color, self.get_position() + [tile_half, tile_half], self._size)
@@ -44,6 +39,10 @@ class GameObject:
         return self._position.y
 
     def get_shape(self):
+        """
+        Get object shape. Required in collision check.
+        :return: Rectangle shape of object
+        """
         if self._circle:
             tile_half_half = int(self._renderer.TILE_HALF / 2)
             pos_x = self._position.x + tile_half_half
@@ -63,6 +62,10 @@ class GameObject:
         return self._position + [self._half_size, self._half_size]
 
     def get_grid_position(self) -> Position:
+        """
+        Returns position of object in renderer field.
+        :return: Grid position
+        """
         center = self.get_center_position()
         x = center.x // self._renderer.TILE_SIZE
         y = center.y // self._renderer.TILE_SIZE
@@ -105,6 +108,11 @@ class Entity(GameObject):
         self._entity_image = pygame.transform.scale(pygame.image.load(entity_image), (self._size, self._size))
 
     def tick(self, dt):
+        """
+        Called on every pygame frame. Moves entity
+        and handle events.
+        :param dt: time (in seconds) since last frame
+        """
         pass
 
     def draw(self):
@@ -114,6 +122,11 @@ class Entity(GameObject):
         self.move_in_direction(self._current_direction)
 
     def move_in_direction(self, direction: Direction):
+        """
+        Moves entity in specified direction without
+        collision check
+        :param direction: Movable direction
+        """
         self._position += direction.to_shift()
 
     def get_current_direction(self):
@@ -123,13 +136,22 @@ class Entity(GameObject):
         self._current_direction = direction
 
     def handle_teleport(self):
+        """
+        Handles horizontal entity teleportation.
+        Depend on gamestate.
+        """
         center = self.get_center_position()
         if center.x < 0:
             self.set_position((self._renderer.SCREEN_WIDTH - self._half_size, self.get_y()))
         elif center.x > self._renderer.SCREEN_WIDTH:
             self.set_position((-self._half_size, self.get_y()))
 
-    def collides_with_wall(self):
+    def collides_with_wall(self) -> bool:
+        """
+        Checks collision with all walls in gamestate
+        in current position.
+        :return: wether collide with any wall or not
+        """
         collision_rect = pygame.Rect(self.get_x(), self.get_y(), self._size, self._size)
         collides = False
         walls = self._renderer.get_walls()

@@ -46,6 +46,10 @@ class Ghost(Entity):
         self.handle_teleport()
 
     def get_current_state(self):
+        """
+        Returns current ghost behaviour (chase\freight etc.)
+        :return: Current behaviour
+        """
         return self._mode_controller.get_current_state()
 
     def _set_chase_target(self):
@@ -58,39 +62,66 @@ class Ghost(Entity):
         self._set_target(self._spawn_position)
 
     def _set_target(self, target: Position):
+        """
+        Sets target to wich ghost fill follow.
+        :param target: Position of this target
+        """
         self._current_target = target
 
     def _get_target(self) -> Position:
+        """
+        Returns current followed target.
+        """
         return self._current_target
 
     def start_scatter(self):
+        """
+        Change current ghost behaviour to scatter.
+        """
         self._mode_controller.start_scatter()
         if self._mode_controller.get_current_state() is GhostBehaviour.SCATTER:
             self._select_direction_method = self._move_to_target_method
             self._set_scatter_target()
 
     def start_chase(self):
+        """
+        Change current ghost behaviour to chase.
+        """
         self._mode_controller.start_chase()
         if self._mode_controller.get_current_state() is GhostBehaviour.CHASE:
             self._select_direction_method = self._move_to_target_method
             self._set_scatter_target()
 
     def start_spawn(self):
+        """
+        Change current ghost behaviour to spawn.
+        """
         self._mode_controller.start_spawn()
         if self._mode_controller.get_current_state() is GhostBehaviour.SPAWN:
             self._select_direction_method = self._move_to_target_method
             self._set_spawn_target()
 
     def start_fright(self):
+        """
+        Change current ghost behaviour to fright.
+        """
         self._mode_controller.start_fright()
         if self._mode_controller.get_current_state() is GhostBehaviour.FRIGHT:
             self._select_direction_method = self._random_move_method
 
     def is_at_spawn_position(self) -> bool:
+        """
+        Checks if currently on spawn position.
+        :return: is on spawn position.
+        """
         grid_position = self.get_grid_position()
         return self._spawn_position.x == grid_position.x and self._spawn_position.y == grid_position.y
 
     def _handle_states(self):
+        """
+        Handles mode controller current states
+        and sets apropriate followed targets.
+        """
         state = self._mode_controller.get_current_state()
         if state is GhostBehaviour.SPAWN:
             if self.is_at_spawn_position():
@@ -105,11 +136,18 @@ class Ghost(Entity):
     # методи, які будуть використовуватись для різних станів привидів.
     # В стані страху буде використовуватись метод випадкового напряму.
     def _move_to_target_method(self):
+        """
+        Method that selects and set direction that
+        has the shortest path to target.
+        """
         directions = self._get_movable_directions()
 
+        # напрям один (це тільки в коридорах, де не можна повертати назад)
         if len(directions) == 1:
             self.set_current_direction(directions[0][0])
         else:
+            # напрямів кілька (це на перехрестях), тому треба обрати той,
+            # що матиме найменший шлях до поточної цілі
             target_position = self._get_target()
             current_best_direction = directions[0][0]
             current_best_distance = 1000000
@@ -123,10 +161,18 @@ class Ghost(Entity):
             self.set_current_direction(current_best_direction)
 
     def _random_move_method(self):
+        """
+        Method that randomly selects and set direction (used in ghost freight mode).
+        """
         directions = self._get_movable_directions()
         self.set_current_direction(random.choice(directions)[0])
 
     def _get_movable_directions(self) -> list[(Direction, Position)]:
+        """
+        Retruns all movable directions from
+        current position and excludes direction to
+        move back.
+        """
         all_directions = (self._renderer.get_ghost_group().maze_controller
                           .get_node_at_position(self.get_grid_position())
                           .get_walkable_positions())
