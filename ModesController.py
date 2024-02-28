@@ -1,11 +1,12 @@
-from Constants import *
+import Constants
+from Constants import GhostBehaviour
 
 
 class ModesController:
     def __init__(self,
-                 scatter_time: int = SCATTER_TIME,
-                 chase_time: int = CHASE_TIME,
-                 fright_time: int = FRIGHT_TIME,
+                 scatter_time: int = Constants.SCATTER_TIME,
+                 chase_time: int = Constants.CHASE_TIME,
+                 fright_time: int = Constants.FRIGHT_TIME,
                  initial_state: GhostBehaviour = GhostBehaviour.SCATTER):
         self._scatter_time = scatter_time
         self._chase_time = chase_time
@@ -15,6 +16,10 @@ class ModesController:
         self._time = 0
 
     def update(self, dt):
+        """
+        Updates mode timer.
+        :param dt: time (in seconds) since last frame
+        """
         if self._current_state is GhostBehaviour.SPAWN:
             return
 

@@ -1,5 +1,5 @@
 from enum import Enum
-from Position import *
+from Position import Position
 import os
 
 MAZE = [
@@ -36,6 +36,7 @@ MAZE = [
     "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 ]
 
+FPS = 240
 SCALE_FACTOR = 3
 TILE_SIZE = 8 * SCALE_FACTOR
 TILE_HALF = int(TILE_SIZE / 2)
@@ -62,6 +63,23 @@ POWERUP_COLOR = (255, 255, 255)
 # Images
 def __get_relative_image_path(filename):
     return os.path.join("images", filename)
+
+
+def set_scale_factor(scale_factor):
+    global SCALE_FACTOR, SCALE_FACTOR, TILE_SIZE
+    global TILE_HALF, GHOST_SIZE, PACMAN_SIZE, MAZE_WIDTH
+    global MAZE_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, APPLE_SIZE, POWERUP_SIZE
+    SCALE_FACTOR = scale_factor
+    TILE_SIZE = 8 * SCALE_FACTOR
+    TILE_HALF = int(TILE_SIZE / 2)
+    GHOST_SIZE = TILE_SIZE
+    PACMAN_SIZE = int(TILE_SIZE)
+    MAZE_WIDTH = len(MAZE[0])
+    MAZE_HEIGHT = len(MAZE)
+    SCREEN_WIDTH = MAZE_WIDTH * TILE_SIZE
+    SCREEN_HEIGHT = MAZE_HEIGHT * TILE_SIZE
+    APPLE_SIZE = int(TILE_SIZE / 6)
+    POWERUP_SIZE = int(TILE_SIZE / 4)
 
 
 RED_GHOST = __get_relative_image_path("ghost_red.png")
