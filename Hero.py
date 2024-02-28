@@ -1,15 +1,16 @@
 from GameObjects import Entity
 from Direction import Direction
-from Position import *
-from Constants import *
+from Constants import ScoreType, GhostBehaviour, PACMAN_SIZE, PACMAN_MOUTH_OPEN, PACMAN_MOUTH_CLOSED
+from Position import Position
 import pygame as pygame
 
 
 class Hero(Entity):
     def __init__(self,
                  game_state,
-                 screen_position: Position):
-        super().__init__(game_state, screen_position, PACMAN_SIZE, (255, 255, 0), False)
+                 screen_position: Position,
+                 hero_size: int = PACMAN_SIZE):
+        super().__init__(game_state, screen_position, hero_size, (255, 255, 0), False)
         self.buffer_direction = self._current_direction
         self.open = pygame.transform.scale(pygame.image.load(PACMAN_MOUTH_OPEN), (self._size, self._size))
         self.closed = pygame.transform.scale(pygame.image.load(PACMAN_MOUTH_CLOSED), (self._size, self._size))
@@ -80,8 +81,8 @@ class Hero(Entity):
             collides = collision_rect.colliderect(ghost.get_shape())
             if collides:
                 if ghost.get_current_state() is GhostBehaviour.FRIGHT:
-                    self._renderer.add_score(self._renderer.ghostGroup.get_points())
-                    self._renderer.ghostGroup.update_points()
+                    self._renderer.add_score(self._renderer.get_ghost_group().get_points())
+                    self._renderer.get_ghost_group().update_points()
                     ghost.start_spawn()
                 elif ghost.get_current_state() is not GhostBehaviour.SPAWN:
                     if not self._renderer.get_won():

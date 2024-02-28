@@ -1,26 +1,26 @@
 from GameObjects import *
-import pygame
-from Constants import *
 from Hero import *
+from Ghosts import *
 
 
 class GameState:
-    def __init__(self, maze_controller):
+    def __init__(self, tile_size, maze_height, maze_width):
         pygame.init()
-        self._width = SCREEN_WIDTH
-        self._height = SCREEN_HEIGHT
-        self._screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.SCREEN_WIDTH = tile_size * maze_width
+        self.SCREEN_HEIGHT = tile_size * maze_height
+        self.TILE_SIZE = tile_size
+        self.TILE_HALF = int(tile_size / 2)
+        self._screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         self._clock = pygame.time.Clock()
         self._done = False
         self._won = False
-        self.maze_controller = maze_controller
         self._game_objects = []
         self._walls = []
         self._cookies = []
         self._powerups = []
         self._ghosts = []
         self._hero: Hero = None
-        self.ghostGroup: GhostGroup = None
+        self._ghost_group: GhostGroup = None
         self._lives = 6
         self._score = 0
         self._score_ghost_eaten = 400
@@ -29,26 +29,26 @@ class GameState:
 
     def tick(self, in_fps: int):
         black = (0, 0, 0)
-        self.ghostGroup.start_scatter()
+        self._ghost_group.start_scatter()
         pygame.time.set_timer(self._mouth_open_close_event, 200)  # open close mouth
         while not self._done:
 
             dt = self._clock.tick(in_fps) / 1000.0
-            self.ghostGroup.tick(dt)
+            self._ghost_group.tick(dt)
 
             if self._hero is not None:
                 self._hero.tick(dt)
 
             for obj in self._game_objects:
                 obj.draw()
-            self.ghostGroup.draw()
+            self._ghost_group.draw()
 
             self.display_text(f"[Score: {self._score}]  [Lives: {self._lives}]")
 
             if self._hero is None:
-                self.display_text("YOU DIED", (self._width / 2 - 256, self._height / 2 - 256), 100)
+                self.display_text("YOU DIED", (self.SCREEN_WIDTH / 2 - 256, self.SCREEN_HEIGHT / 2 - 256), 100)
             if self.get_won():
-                self.display_text("YOU WON", (self._width / 2 - 256, self._height / 2 - 256), 100)
+                self.display_text("YOU WON", (self.SCREEN_WIDTH / 2 - 256, self.SCREEN_HEIGHT / 2 - 256), 100)
             pygame.display.flip()
             self._clock.tick(in_fps)
             self._screen.fill(black)
@@ -58,6 +58,12 @@ class GameState:
     def get_surface(self):
         return self._screen
 
+    def translate_screen_to_maze(self, coordinates: Position | tuple[int, int]):
+        return Position(int(coordinates[0] / self.TILE_SIZE), int(coordinates[1] / self.TILE_SIZE))
+
+    def translate_maze_to_screen(self, coordinates: Position | tuple[int, int]):
+        return Position(coordinates[0] * self.TILE_SIZE, coordinates[1] * self.TILE_SIZE)
+
     def add_game_object(self, obj: GameObject):
         self._game_objects.append(obj)
 
@@ -66,18 +72,18 @@ class GameState:
         self._cookies.append(obj)
 
     def set_ghost_group(self, group: GhostGroup):
-        self.ghostGroup = group
+        self._ghost_group = group
 
     def get_ghost_group(self) -> GhostGroup:
-        return self.ghostGroup
+        return self._ghost_group
 
     def add_powerup(self, obj: GameObject):
         self._game_objects.append(obj)
         self._powerups.append(obj)
 
     def activate_powerup(self):
-        self.ghostGroup.reset_points()
-        self.ghostGroup.start_freight()
+        self._ghost_group.reset_points()
+        self._ghost_group.start_freight()
 
     def set_won(self):
         self._won = True
@@ -95,7 +101,7 @@ class GameState:
 
     def kill_pacman(self):
         self._lives -= 1
-        self._hero.set_position(Position(TILE_SIZE, TILE_SIZE))
+        self._hero.set_position(Position(self.TILE_SIZE, self.TILE_SIZE))
         self._hero.set_direction(Direction.NONE)
         if self._lives == 0: self.end_game()
 

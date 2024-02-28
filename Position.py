@@ -8,9 +8,19 @@ class Position:
         self.y = y
 
     def center_to(self, other: Union["Position", list, tuple]) -> "Position":
+        """
+        Calculate center of two position (vectors) using formula: (Vect2 - Vect1)
+        :param other: other position or tuple with 2 elements
+        :return:
+        """
         return Position(self.x - other[0], self.y - other[1])
 
     def distance_to(self, other: Union["Position", list, tuple]):
+        """
+        Calculate distance between two positions.
+        :param other: Position or tuple with 2 elements
+        :return:
+        """
         center = self.center_to(other)
         return math.sqrt(center.x ** 2 + center.y ** 2)
 
@@ -47,7 +57,7 @@ class Position:
         else:
             raise TypeError("Unsupported operand type")
 
-    def __mul__(self, scalar):
+    def __mul__(self, scalar) -> "Position":
         return Position(self.x * scalar, self.y * scalar)
 
     def __eq__(self, other):
@@ -57,4 +67,3 @@ class Position:
 
     def __hash__(self):
         return hash((self.x, self.y))
-
