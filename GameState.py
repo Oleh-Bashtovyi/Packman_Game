@@ -96,7 +96,7 @@ class GameState:
         if self._hero in self._game_objects:
             self._game_objects.remove(self._hero)
         self._hero = None
-
+    #методи kill_pacman(self), display_text(self, text, in_position=(32, 0), in_size=30), add_wall(self, obj: Wall) спрощують управління головним героєм, відображенням тексту та додаванням об'єктів стін до гри
     def kill_pacman(self):
         self._lives -= 1
         self._hero.set_position(Position(self.TILE_SIZE, self.TILE_SIZE))
