@@ -88,7 +88,7 @@ class GameState:
 
     def get_won(self):
         return self._won
-
+    #методи kill_pacman(self), display_text(self, text, in_position=(32, 0), in_size=30), add_wall(self, obj: Wall) спрощують управління головним героєм, відображенням тексту та додаванням об'єктів стін до гри
     def add_score(self, in_score: int):
         self._score += in_score
 
