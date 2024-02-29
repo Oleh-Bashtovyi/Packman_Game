@@ -26,27 +26,29 @@ class GameState:
         self._score_ghost_eaten = 400
         self._score_powerup_pickup = 50
         self._mouth_open_close_event = pygame.USEREVENT + 1
-    #метод забезпечує неперервну роботу гри, управляючи оновленням стану гри та відображенням його на екрані, що робить його ключовим елементом для гравців і реалізації самої гри    def tick(self, in_fps: int)
-        self._ghost_group.start_scatter()
+    #метод забезпечує неперервну роботу гри, управляючи оновленням стану гри та відображенням його на екрані, що робить його ключовим елементом для гравців і реалізації самої гри   
+    def tick(self, in_fps: int):
+        black = (0, 0, 0)
+        self.ghostGroup.start_scatter()
         pygame.time.set_timer(self._mouth_open_close_event, 200)  # open close mouth
         while not self._done:
 
             dt = self._clock.tick(in_fps) / 1000.0
-            self._ghost_group.tick(dt)
+            self.ghostGroup.tick(dt)
 
             if self._hero is not None:
                 self._hero.tick(dt)
 
             for obj in self._game_objects:
                 obj.draw()
-            self._ghost_group.draw()
+            self.ghostGroup.draw()
 
             self.display_text(f"[Score: {self._score}]  [Lives: {self._lives}]")
 
             if self._hero is None:
-                self.display_text("YOU DIED", (self.SCREEN_WIDTH / 2 - 256, self.SCREEN_HEIGHT / 2 - 256), 100)
+                self.display_text("YOU DIED", (self._width / 2 - 256, self._height / 2 - 256), 100)
             if self.get_won():
-                self.display_text("YOU WON", (self.SCREEN_WIDTH / 2 - 256, self.SCREEN_HEIGHT / 2 - 256), 100)
+                self.display_text("YOU WON", (self._width / 2 - 256, self._height / 2 - 256), 100)
             pygame.display.flip()
             self._clock.tick(in_fps)
             self._screen.fill(black)
