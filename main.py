@@ -3,7 +3,7 @@ import Constants
 import MazeController
 from GameState import *
 
-
+#метод призначений для обробки аргументів командного рядка, які можуть бути передані програмі при її запуску
 def parse_args():
     parser = argparse.ArgumentParser(description='Pacman app')
     parser.add_argument('--fps', default=Constants.FPS, type=int, help='FPS')
