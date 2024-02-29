@@ -17,11 +17,11 @@ class MazeNode:
 
     def get_position(self):
         return Position(self._x, self._y)
-
+#забезпечує управління різними аспектами лабіринту у грі, такими як розташування печива, підсилення, привидів та доступних вузлів у лабіринті
 class MazeController:
     def __init__(self):
         self.nodes: Dict[Position, MazeNode] = {}
-
+    #методи add_node і add_edge використовуються для побудови графа лабіринту, в якому кожний вузол відображається з відповідною позицією, а кожен зв'язок відображається як сусідній вузол з відповідним напрямком
     def add_node(self, position: Position):
         if position not in self.nodes:
             self.nodes[position] = MazeNode(position.x, position.y)
@@ -31,7 +31,7 @@ class MazeController:
         to_node = self.nodes.get(to_position)
         if from_node and to_node:
             from_node.add_neighbour(direction, to_node)
-
+    #метод створює граф лабіринту, де кожна комірка лабіринту є вузлом, а зв'язки між комірками представлені як зв'язки у цьому графі
     def read_maze(self, maze):
 
         # створити вузли MazeNode
