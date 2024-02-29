@@ -52,7 +52,7 @@ class GameState:
             self._screen.fill(black)
             self._handle_events()
         print("Game over")
-
+    #методи get_surface(self), add_game_object(self, obj: GameObject), add_apple(self, obj: GameObject) допомагають управляти об'єктами гри та взаємодіяти з ними шляхом додавання до відповідних списків, що дозволяє програмі керувати та відображати їх у грі
     def get_surface(self):
         return self._screen
 
