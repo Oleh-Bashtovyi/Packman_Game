@@ -49,6 +49,7 @@ class Hero(Entity):
     def set_direction(self, direction: Direction):
         self.buffer_direction = direction
 
+    #метод відповідає за взаємодію героя з об'єктами на мапі гри, реалізуючи механіку збору печива та підсилення
     def handle_cookie_pickup(self):
         collision_rect = pygame.Rect(self._position.x, self._position.y, self._size, self._size)
         cookies = self._renderer.get_cookies()
@@ -74,7 +75,7 @@ class Hero(Entity):
                 game_objects.remove(powerup)
                 self._renderer.add_score(ScoreType.POWERUP.value)
                 self._renderer.activate_powerup()
-
+    #метод відповідає за взаємодію героя з привидами у грі, визначаючи результати зіткнень та відповідні дії гравця
     def handle_ghosts(self):
         collision_rect = self.get_shape()
         ghosts = self._renderer.get_ghost_group().get_ghosts()
