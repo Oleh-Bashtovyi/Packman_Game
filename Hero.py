@@ -4,7 +4,7 @@ from Constants import ScoreType, GhostBehaviour, PACMAN_SIZE, PACMAN_MOUTH_OPEN,
 from Position import Position
 import pygame as pygame
 
-
+#ініціалізація героя гри, завантаження його графічного представлення (відкритий та закритий рот) і встановлення початкового стану
 class Hero(Entity):
     def __init__(self,
                  game_state,
