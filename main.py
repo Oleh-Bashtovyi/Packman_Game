@@ -12,7 +12,7 @@ def parse_args():
     Constants.FPS = args.fps
     Constants.set_scale_factor(args.sclf)
 
-
+#цей код встановлює основи гри та починає її виконання, створюючи об'єкти гри, додаючи їх до головного об'єкту game_state та запускаючи головний цикл гри
 if __name__ == "__main__":
     parse_args()
     MAZE = Constants.MAZE
