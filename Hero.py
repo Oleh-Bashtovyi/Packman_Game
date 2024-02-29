@@ -11,7 +11,7 @@ class Hero(Entity):
                  screen_position: Position,
                  hero_size: int = PACMAN_SIZE):
         super().__init__(game_state, screen_position, hero_size, (255, 255, 0), False)
-        self.buffer_direction = self._current_direction
+        self.buffer_direction = self._currentFda_direction
         self.open = pygame.transform.scale(pygame.image.load(PACMAN_MOUTH_OPEN), (self._size, self._size))
         self.closed = pygame.transform.scale(pygame.image.load(PACMAN_MOUTH_CLOSED), (self._size, self._size))
         self.image = self.open
@@ -90,7 +90,7 @@ class Hero(Entity):
                 elif ghost.get_current_state() is not GhostBehaviour.SPAWN:
                     if not self._renderer.get_won():
                         self._renderer.kill_pacman()
-
+    #метод відповідає за вибір та обробку зображення головного героя гри, а також за його правильне відображення та обертання відповідно до напрямку руху
     def draw(self):
         self._entity_image = self.open if self.mouth_open else self.closed
         self._entity_image = pygame.transform.rotate(self._entity_image, self._current_direction.to_angle())
