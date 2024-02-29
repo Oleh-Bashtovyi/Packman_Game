@@ -35,6 +35,7 @@ class Hero(Entity):
         self.handle_cookie_pickup()
         self.handle_ghosts()
 
+#цей метод дозволяє перевіряти можливість руху героя у певному напрямку без фактичного переміщення та дозволяє виконати відповідні дії в залежності від результату цієї спроби переміщення
     def _try_move_in_direction(self, direction: Direction) -> bool:
         prev_position = self.get_position()
         self.move_in_direction(direction)
