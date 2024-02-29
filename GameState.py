@@ -89,7 +89,7 @@ class GameState:
 
     def get_won(self):
         return self._won
-    #методи kill_pacman(self), display_text(self, text, in_position=(32, 0), in_size=30), add_wall(self, obj: Wall) спрощують управління головним героєм, відображенням тексту та додаванням об'єктів стін до гри
+    #методи add_score(self, in_score: int), end_game(self) групують функціонал, пов'язаний з керуванням рахунком гравця та завершенням гри, що дозволяє зручно керувати цими аспектами гри з одного місця
     def add_score(self, in_score: int):
         self._score += in_score
 
@@ -107,7 +107,7 @@ class GameState:
     def display_text(self, text, in_position=(32, 0), in_size=30):
         font = pygame.font.SysFont('Arial', in_size)
         text_surface = font.render(text, False, (255, 255, 255))
-        self._screen.blit(text_surface, in_position)
+        self._screen(text_surface, in_position)
 
     def add_wall(self, obj: Wall):
         self.add_game_object(obj)
