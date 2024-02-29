@@ -17,6 +17,7 @@ class Hero(Entity):
         self.image = self.open
         self.mouth_open = True
 
+    #метод відповідає за керування рухом героя, зокрема враховує зміни напрямку руху, взаємодію з об'єктами на мапі та подіями гри
     def tick(self, dt):
         # якщо буфер відрізняється, то гравець нажав клавішу і змінив напрям
         if self.buffer_direction != self._current_direction:
