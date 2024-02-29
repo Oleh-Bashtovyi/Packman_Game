@@ -1,7 +1,8 @@
 from GameObjects import *
 from Hero import *
 from Ghosts import *
-
+Перед class GameState:
+#клас визначає стан гри, включаючи параметри вікна, об'єкти гри, життя гравця, рахунок та інші важливі параметри, які використовуються під час гри
 
 class GameState:
     def __init__(self, tile_size, maze_height, maze_width):
