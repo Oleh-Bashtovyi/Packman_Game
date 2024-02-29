@@ -1,7 +1,7 @@
 from Position import Position
 from typing import Dict
 from Direction import Direction
-
+# дозволяє представити вузол у лабіринті та взаємодіяти з його сусідніми вузлами
 
 class MazeNode:
     def __init__(self, x, y):
@@ -17,7 +17,6 @@ class MazeNode:
 
     def get_position(self):
         return Position(self._x, self._y)
-
 
 class MazeController:
     def __init__(self):
