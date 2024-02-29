@@ -74,7 +74,7 @@ class GameState:
 
     def get_ghost_group(self) -> GhostGroup:
         return self._ghost_group
-
+    #методи add_powerup і activate_powerup відповідають за додавання підсилення до гри та активацію його впливу відповідно
     def add_powerup(self, obj: GameObject):
         self._game_objects.append(obj)
         self._powerups.append(obj)
