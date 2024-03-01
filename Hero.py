@@ -18,6 +18,11 @@ class Hero(Entity):
         self.mouth_open = True
 
     def tick(self, dt):
+        """
+        is responsible for controlling the movement of the hero, 
+        in particular, takes into account changes in the direction of movement, 
+        interaction with objects on the map and game events
+        """
         # якщо буфер відрізняється, то гравець нажав клавішу і змінив напрям
         if self.buffer_direction != self._current_direction:
             # якщо вдалось піти в тому напрямі, що вказав користувач
@@ -36,6 +41,11 @@ class Hero(Entity):
         self.handle_ghosts()
 
     def _try_move_in_direction(self, direction: Direction) -> bool:
+        """
+        allows you to check the possibility of the hero moving in a certain direction 
+        without actually moving and allows you to perform appropriate actions depending 
+        on the result of this attempted movement
+        """
         prev_position = self.get_position()
         self.move_in_direction(direction)
 
@@ -49,6 +59,10 @@ class Hero(Entity):
         self.buffer_direction = direction
 
     def handle_cookie_pickup(self):
+        """
+        is responsible for the interaction of the hero with objects on the game map, 
+        implementing the mechanics of collecting cookies and power-ups
+        """
         collision_rect = pygame.Rect(self._position.x, self._position.y, self._size, self._size)
         cookies = self._renderer.get_cookies()
         powerups = self._renderer.get_powerups()
@@ -75,6 +89,10 @@ class Hero(Entity):
                 self._renderer.activate_powerup()
 
     def handle_ghosts(self):
+        """
+        is responsible for the hero's interaction with the ghosts in the game, 
+        determining the results of the encounters and the corresponding actions of the player
+        """
         collision_rect = self.get_shape()
         ghosts = self._renderer.get_ghost_group().get_ghosts()
         for ghost in ghosts:
@@ -89,6 +107,10 @@ class Hero(Entity):
                         self._renderer.kill_pacman()
 
     def draw(self):
+        """
+        is responsible for selecting and processing the image of the main character of the game,
+        as well as for its correct display and rotation according to the direction of movement
+        """
         self._entity_image = self.open if self.mouth_open else self.closed
         self._entity_image = pygame.transform.rotate(self._entity_image, self._current_direction.to_angle())
         super().draw()
