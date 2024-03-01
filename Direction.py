@@ -10,6 +10,10 @@ class Direction(Enum):
     RIGHT = auto()
 
     def opposite(self):
+        """
+        Opposite direction
+        :return: Opposite direction
+        """
         if self == Direction.UP:
             return Direction.DOWN
         elif self == Direction.DOWN:
@@ -21,6 +25,10 @@ class Direction(Enum):
         return Direction.NONE
 
     def to_shift(self) -> Tuple[int, int]:
+        """
+        Converts direction to shift tuple to change position in grid
+        :return: Shift tuple
+        """
         if self == Direction.UP:
             return 0, -1
         elif self == Direction.DOWN:
@@ -32,6 +40,10 @@ class Direction(Enum):
         return 0, 0
 
     def to_angle(self) -> int:
+        """
+        Converts direction to angle in degree.
+        :return: Angle in degrees
+        """
         if self == Direction.UP:
             return 90
         elif self == Direction.DOWN:

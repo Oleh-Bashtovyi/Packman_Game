@@ -1,7 +1,7 @@
 from Position import Position
-from typing import Dict, Tuple, List
+from typing import Dict
 from Direction import Direction
-
+# дозволяє представити вузол у лабіринті та взаємодіяти з його сусідніми вузлами
 
 class MazeNode:
     def __init__(self, x, y):
@@ -17,17 +17,11 @@ class MazeNode:
 
     def get_position(self):
         return Position(self._x, self._y)
-
-
+#забезпечує управління різними аспектами лабіринту у грі, такими як розташування печива, підсилення, привидів та доступних вузлів у лабіринті
 class MazeController:
     def __init__(self):
-        self.numpy_maze = []
-        self.cookie_spaces = []
-        self.powerup_spaces = []
-        self.reachable_spaces = []
-        self.ghost_spawns = []
         self.nodes: Dict[Position, MazeNode] = {}
-
+    #методи add_node і add_edge використовуються для побудови графа лабіринту, в якому кожний вузол відображається з відповідною позицією, а кожен зв'язок відображається як сусідній вузол з відповідним напрямком
     def add_node(self, position: Position):
         if position not in self.nodes:
             self.nodes[position] = MazeNode(position.x, position.y)
@@ -37,26 +31,26 @@ class MazeController:
         to_node = self.nodes.get(to_position)
         if from_node and to_node:
             from_node.add_neighbour(direction, to_node)
-
+    #метод створює граф лабіринту, де кожна комірка лабіринту є вузлом, а зв'язки між комірками представлені як зв'язки у цьому графі
     def read_maze(self, maze):
 
-        #створити вузли MazeNode
+        # створити вузли MazeNode
         for y, row in enumerate(maze):
             for x, cell in enumerate(row):
                 position = Position(x, y)
                 self.add_node(position)
 
-        #Заповнити вузли сусідами
+        # Заповнити вузли сусідами
         for y, row in enumerate(maze):
             for x, cell in enumerate(row):
                 position = Position(x, y)
-                #додати телепорти
+                # додати телепорти
                 if x == 0:
                     self.add_edge(position, Position(len(row)-1, y), Direction.LEFT)
                 if x == len(row) - 1:
                     self.add_edge(position, Position(0, y), Direction.RIGHT)
 
-                #звичайні напрями вліво\вправо\вгору\вниз
+                # звичайні напрями вліво\вправо\вгору\вниз
                 if x > 0 and row[x - 1] != 'X':
                     self.add_edge(position, Position(x - 1, y), Direction.LEFT)
                 if x < len(row) - 1 and row[x + 1] != 'X':
