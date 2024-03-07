@@ -5,6 +5,9 @@ from GameState import *
 
 
 def parse_args():
+    """
+    handles command-line arguments that can be passed to the program when it starts
+    """
     parser = argparse.ArgumentParser(description='Pacman app')
     parser.add_argument('--fps', default=Constants.FPS, type=int, help='FPS')
     parser.add_argument('--sclf', default=Constants.SCALE_FACTOR, type=int, help='Scale factor')
@@ -14,6 +17,10 @@ def parse_args():
 
 
 if __name__ == "__main__":
+    """
+    sets up the game framework and starts the game by creating game objects,
+    adding them to the main game_state object, and starting the main game loop
+    """
     parse_args()
     MAZE = Constants.MAZE
     mzController = MazeController.MazeController()
