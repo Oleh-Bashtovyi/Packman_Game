@@ -1,4 +1,4 @@
-from GameObjects import *
+﻿from GameObjects import *
 from Hero import *
 from Ghosts import *
 #клас визначає стан гри, включаючи параметри вікна, об'єкти гри, життя гравця, рахунок та інші важливі параметри, які використовуються під час гри
@@ -28,6 +28,10 @@ class GameState:
         self._mouth_open_close_event = pygame.USEREVENT + 1
     #метод забезпечує неперервну роботу гри, управляючи оновленням стану гри та відображенням його на екрані, що робить його ключовим елементом для гравців і реалізації самої гри   
     def tick(self, in_fps: int):
+        """
+        ensures uninterrupted game operation by controlling the updating of game state and its display on the screen,
+        making it a key element for players and the implementation of the game itself
+        """
         black = (0, 0, 0)
         self.ghostGroup.start_scatter()
         pygame.time.set_timer(self._mouth_open_close_event, 200)  # open close mouth
@@ -59,9 +63,18 @@ class GameState:
         return self._screen
 
     def translate_screen_to_maze(self, coordinates: Position | tuple[int, int]):
+        """
+        calculates the corresponding coordinates in the maze by dividing the x and y values ​​by the size of one tile
+        (specified as self.TILE_SIZE) and returns the result in the form of a Position object.
+        """
         return Position(int(coordinates[0] / self.TILE_SIZE), int(coordinates[1] / self.TILE_SIZE))
 
     def translate_maze_to_screen(self, coordinates: Position | tuple[int, int]):
+        """
+        takes the coordinates of a point in the maze (again, as an (x, y) tuple or a Position object)
+        and translates them to the corresponding coordinates on the screen by multiplying the x and y values
+        by the size of one tile (self.TILE_SIZE) and returns the result in the form of the Position object
+        """
         return Position(coordinates[0] * self.TILE_SIZE, coordinates[1] * self.TILE_SIZE)
 
     def add_game_object(self, obj: GameObject):
@@ -78,6 +91,9 @@ class GameState:
         return self._ghost_group
     #методи add_powerup і activate_powerup відповідають за додавання підсилення до гри та активацію його впливу відповідно
     def add_powerup(self, obj: GameObject):
+        """
+        The add_powerup and activate_powerup methods are responsible for adding a power-up to the game and activating its effect, respectively
+        """
         self._game_objects.append(obj)
         self._powerups.append(obj)
 
@@ -92,6 +108,10 @@ class GameState:
         return self._won
     #методи add_score(self, in_score: int), end_game(self) групують функціонал, пов'язаний з керуванням рахунком гравця та завершенням гри, що дозволяє зручно керувати цими аспектами гри з одного місця
     def add_score(self, in_score: int):
+        """
+        methods add_score(self, in_score: int), end_game(self) group the functionality related to managing
+        the player's score and ending the game, allowing you to conveniently manage these aspects of the game from one place
+        """
         self._score += in_score
 
     def end_game(self):
@@ -100,6 +120,10 @@ class GameState:
         self._hero = None
     #методи kill_pacman(self), display_text(self, text, in_position=(32, 0), in_size=30), add_wall(self, obj: Wall) спрощують управління головним героєм, відображенням тексту та додаванням об'єктів стін до гри
     def kill_pacman(self):
+        """
+        methods kill_pacman(self), display_text(self, text, in_position=(32, 0), in_size=30),
+        add_wall(self, obj: Wall) make it easy to control the main character, display text and add wall objects to the game
+        """
         self._lives -= 1
         self._hero.set_position(Position(self.TILE_SIZE, self.TILE_SIZE))
         self._hero.set_direction(Direction.NONE)
@@ -131,6 +155,10 @@ class GameState:
         self._hero = in_hero
     #метод забезпечує взаємодію користувача з грою, обробляючи різні види введення, такі як натискання клавіш і закриття вікна, а також забезпечує анімацію руху головного героя гри
     def _handle_events(self):
+        """
+        provides user interaction with the game by handling various types of input, such as key presses and closing windows, 
+        and also provides animation for the movement of the main character of the game
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self._done = True
