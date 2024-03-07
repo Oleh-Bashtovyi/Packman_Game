@@ -4,6 +4,9 @@ from Direction import Direction
 
 
 class MazeNode:
+    """
+    allows you to represent a node in the maze and interact with its neighboring nodes
+    """
     def __init__(self, x, y):
         self._x = x
         self._y = y
@@ -20,10 +23,18 @@ class MazeNode:
 
 
 class MazeController:
+    """
+    provides control over various aspects of the maze in the game, such as the placement
+    of cookies, power-ups, ghosts, and available maze nodes
+    """
     def __init__(self):
         self.nodes: Dict[Position, MazeNode] = {}
 
     def add_node(self, position: Position):
+        """
+        the add_node and add_edge methods are used to construct a maze graph in which each node is displayed
+        with a corresponding position and each link is displayed as a neighboring node with a corresponding direction
+        """
         if position not in self.nodes:
             self.nodes[position] = MazeNode(position.x, position.y)
 
@@ -34,6 +45,9 @@ class MazeController:
             from_node.add_neighbour(direction, to_node)
 
     def read_maze(self, maze):
+        """
+        creates a maze graph where each maze cell is a node and the connections between the cells are represented as links in this graph
+        """
 
         # створити вузли MazeNode
         for y, row in enumerate(maze):
