@@ -49,3 +49,4 @@ if __name__ == "__main__":
     game_state.add_hero(pacman)
     game_state.set_ghost_group(ghostGroup)
     game_state.tick(Constants.FPS)
+    print('finished!')
