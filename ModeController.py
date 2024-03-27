@@ -2,7 +2,7 @@ import Constants
 from Constants import GhostBehaviour
 
 
-class BehaviourController:
+class ModeController:
     def __init__(self,
                  scatter_time: int = Constants.SCATTER_TIME,
                  chase_time: int = Constants.CHASE_TIME,
@@ -12,8 +12,8 @@ class BehaviourController:
         self._chase_time = chase_time
         self._fright_time = fright_time
         self._current_state = initial_state
-        self._timer = 0
-        self._time = 0
+        self._update_time()
+        self.reset_timer()
 
     def update(self, dt):
         """
@@ -41,25 +41,37 @@ class BehaviourController:
     def get_current_state(self):
         return self._current_state
 
-    def _reset_timer(self):
+    def reset_timer(self):
         self._timer = 0
+
+    def _update_time(self):
+        if self._current_state == GhostBehaviour.SCATTER:
+            self._time = self._scatter_time
+        elif self._current_state == GhostBehaviour.CHASE:
+            self._time = self._chase_time
+        elif self._current_state == GhostBehaviour.FRIGHT:
+            self._time = self._fright_time
+        else:
+            self._time = 9999
 
     def start_spawn(self):
         self._current_state = GhostBehaviour.SPAWN
+        self._time = 9999
+        self.reset_timer()
 
     def start_scatter(self):
         self._current_state = GhostBehaviour.SCATTER
         self._time = self._scatter_time
-        self._reset_timer()
+        self.reset_timer()
 
     def start_chase(self):
         self._current_state = GhostBehaviour.CHASE
         self._time = self._chase_time
-        self._reset_timer()
+        self.reset_timer()
 
     def start_fright(self):
         if self._current_state is GhostBehaviour.SPAWN:
             return
         self._current_state = GhostBehaviour.FRIGHT
         self._time = self._fright_time
-        self._reset_timer()
+        self.reset_timer()
