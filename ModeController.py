@@ -2,7 +2,7 @@ import Constants
 from Constants import GhostBehaviour
 
 
-class ModesController:
+class BehaviourController:
     def __init__(self,
                  scatter_time: int = Constants.SCATTER_TIME,
                  chase_time: int = Constants.CHASE_TIME,
@@ -34,6 +34,9 @@ class ModesController:
             self.start_chase()
         elif self._current_state is GhostBehaviour.FRIGHT:
             self.start_chase()
+
+    def get_current_state_time_left(self):
+        return max(self._time - self._timer, 0)
 
     def get_current_state(self):
         return self._current_state
