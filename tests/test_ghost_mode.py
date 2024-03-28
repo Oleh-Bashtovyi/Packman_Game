@@ -1,5 +1,6 @@
 import pytest
 
+from tests.test_helpers import almost_equal, controller_has_state_and_time_left
 from ModeController import ModeController
 from Constants import GhostBehaviour
 
@@ -69,7 +70,22 @@ def test_start_scatter_after_scatter_some_time(default_scatter_mode_controller, 
     assert controller.get_current_state() == GhostBehaviour.SCATTER
     assert almost_equal(controller.get_current_state_time_left(), default_scatter_time)
 
+
+def test_from_scatter_to_chase_transition(default_scatter_mode_controller, default_scatter_time, default_chase_time):
+    controller = default_scatter_mode_controller
+    assert controller_has_state_and_time_left(controller, GhostBehaviour.SCATTER, default_scatter_time)
+    controller.update(default_scatter_time - 1.5)
+    assert controller_has_state_and_time_left(controller, GhostBehaviour.SCATTER, 1.5)
+    controller.update(default_scatter_time)
+    assert controller_has_state_and_time_left(controller, GhostBehaviour.CHASE, default_chase_time)
+    controller.update(default_chase_time - 3.71)
+    assert controller_has_state_and_time_left(controller, GhostBehaviour.CHASE, 3.71)
+
+
 def test_start_freight_while_spawn():
+    """
+    While spawn ghost should not be able to freight
+    """
     controler = ModeController(10, 10, 10, GhostBehaviour.SPAWN)
     controler.start_fright()
     assert controler.get_current_state() == GhostBehaviour.SPAWN
@@ -93,8 +109,4 @@ def test_mode_spawn():
     assert controller.get_current_state() == GhostBehaviour.SPAWN
 
 
-def almost_equal(a, b, tolerance=1e-9):
-    """
-    Checks if two numbers are almost equal within a given tolerance.
-    """
-    return abs(a - b) <= tolerance
+
