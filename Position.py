@@ -57,12 +57,20 @@ class Position:
         else:
             raise TypeError("Unsupported operand type")
 
-    def __mul__(self, scalar) -> "Position":
+    def __mul__(self, scalar):
+        if isinstance(scalar, (Position, list, tuple)):
+            if len(scalar) >= 2:
+                return self.x * scalar[0] + self.y * scalar[1]
+            elif len(scalar) == 1:
+                return self.x * scalar[0] + self.y * scalar[0]
+            else:
+                return Position(self.x, self.y)
         return Position(self.x * scalar, self.y * scalar)
 
     def __eq__(self, other):
-        if isinstance(other, Position):
-            return self.x == other.x and self.y == other.y
+        if isinstance(other, (Position, list, tuple)):
+            if len(other) == 2:
+                return self.x == other[0] and self.y == other[1]
         return False
 
     def __hash__(self):
