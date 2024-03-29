@@ -319,6 +319,9 @@ class GhostGroup:
             self._blue_ghost)
         self._current_points: int = ScoreType.GHOST.value
 
+    # def add_ghost(self, ghost: Ghost):
+    #     self._ghosts.
+
     def draw(self):
         for ghost in self._ghosts:
             ghost.draw()

@@ -15,18 +15,8 @@ def parse_args():
     Constants.FPS = args.fps
     Constants.set_scale_factor(args.sclf)
 
-#цей код встановлює основи гри та починає її виконання, створюючи об'єкти гри, додаючи їх до головного об'єкту game_state та запускаючи головний цикл гри
-if __name__ == "__main__":
-    """
-    sets up the game framework and starts the game by creating game objects,
-    adding them to the main game_state object, and starting the main game loop
-    """
-    parse_args()
-    MAZE = Constants.MAZE
-    mzController = MazeController.MazeController()
-    mzController.read_maze(MAZE)
-    game_state = GameState(Constants.TILE_SIZE, Constants.MAZE_HEIGHT, Constants.MAZE_WIDTH)
 
+def fill_gamestate(game_state: GameState, MAZE):
     for i, row in enumerate(MAZE):
         for j, column in enumerate(row):
             vect = Constants.translate_maze_to_screen((j, i))
@@ -39,6 +29,34 @@ if __name__ == "__main__":
             else:
                 apple = Apple(game_state, vect, Constants.APPLE_SIZE)
                 game_state.add_apple(apple)
+
+
+#цей код встановлює основи гри та починає її виконання, створюючи об'єкти гри, додаючи їх до головного об'єкту game_state та запускаючи головний цикл гри
+if __name__ == "__main__":
+    """
+    sets up the game framework and starts the game by creating game objects,
+    adding them to the main game_state object, and starting the main game loop
+    """
+    parse_args()
+    MAZE = Constants.MAZE
+    mzController = MazeController.MazeController()
+    mzController.read_maze(MAZE)
+    game_state = GameState(Constants.TILE_SIZE, Constants.MAZE_HEIGHT, Constants.MAZE_WIDTH)
+
+    fill_gamestate(game_state, MAZE)
+
+    # for i, row in enumerate(MAZE):
+    #     for j, column in enumerate(row):
+    #         vect = Constants.translate_maze_to_screen((j, i))
+    #         if MAZE[i][j] == "X":
+    #             wall = Wall(game_state, vect)
+    #             game_state.add_wall(wall)
+    #         elif MAZE[i][j] == "P":
+    #             powerup = Powerup(game_state, vect, Constants.POWERUP_SIZE)
+    #             game_state.add_powerup(powerup)
+    #         else:
+    #             apple = Apple(game_state, vect, Constants.APPLE_SIZE)
+    #             game_state.add_apple(apple)
 
     pacman = Hero(game_state, game_state.translate_maze_to_screen(Position(1, 1)),  Constants.PACMAN_SIZE)
     ghostGroup = GhostGroup(game_state, pacman, Constants.GHOST_SIZE, mzController,
