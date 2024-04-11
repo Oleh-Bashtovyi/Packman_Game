@@ -20,7 +20,7 @@ class Ghost(Entity):
                  obj_size: int,
                  pacman=None,
                  obj_color: Tuple[int, int, int] = (255, 0, 0),
-                 entity_image=RED_GHOST):
+                 entity_image=None):
         super().__init__(game_state, screen_position, obj_size, obj_color, is_circle=False, entity_image=entity_image)
         self._mode_controller: ModeController = ModeController()
         self._fright_image = pygame.transform.scale(pygame.image.load(SCARED_GHOST), (self._size, self._size))

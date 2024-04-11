@@ -102,10 +102,14 @@ class Entity(GameObject):
                  obj_size: int,
                  obj_color: Tuple[int, int, int] = (255, 0, 0),
                  is_circle: bool = False,
-                 entity_image=RED_GHOST):
+                 entity_image=None):
         super().__init__(game_state, screen_position, obj_size, obj_color, is_circle)
         self._current_direction = Direction.NONE
-        self._entity_image = pygame.transform.scale(pygame.image.load(entity_image), (self._size, self._size))
+
+        if entity_image is not None:
+            self._entity_image = pygame.transform.scale(pygame.image.load(entity_image), (self._size, self._size))
+        else:
+            self._entity_image = None
 
     def tick(self, dt):
         """
@@ -116,7 +120,8 @@ class Entity(GameObject):
         pass
 
     def draw(self):
-        self._surface.blit(self._entity_image, self.get_shape())
+        if self._entity_image is not None:
+            self._surface.blit(self._entity_image, self.get_shape())
 
     def move_in_current_direction(self):
         self.move_in_direction(self._current_direction)
@@ -160,6 +165,3 @@ class Entity(GameObject):
             if collides:
                 break
         return collides
-
-
-
