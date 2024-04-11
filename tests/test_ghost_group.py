@@ -1,5 +1,6 @@
 import pytest
 
+import Constants
 from Direction import Direction
 from Ghosts import RedGhost, PinkGhost
 from GameState import GameState
@@ -104,6 +105,39 @@ def test_ghosts_state_2(dummy_game_state_with_entities_and_objects, monkeypatch)
     ghost_group.tick(2)
     assert_all_ghosts_have_state(ghost_group, GhostBehaviour.CHASE)
     assert_all_ghosts_have_direction(ghost_group, Direction.LEFT)
+
+
+def test_screen_position_change(dummy_game_state_with_entities_and_objects):
+    game_state = dummy_game_state_with_entities_and_objects
+    ghost_group = game_state.get_ghost_group()
+    expected_positions = [ghost.get_screen_position() - Position(10, 0) for ghost in ghost_group.get_ghosts()]
+    for i in range(10):
+        ghost_group.tick(1)
+
+
+    assert_all_ghosts_have_screen_position(ghost_group, expected_positions)
+
+
+def test_ghost_group_points():
+    ghost_group = GhostGroup(None, None)
+    default_points_value = Constants.ScoreType.GHOST.value
+    assert ghost_group.get_points() == default_points_value
+    ghost_group.update_points()
+    assert ghost_group.get_points() == default_points_value * 2
+    ghost_group.update_points()
+    assert ghost_group.get_points() == default_points_value * 4
+    ghost_group.reset_points()
+    assert ghost_group.get_points() == default_points_value
+
+
+def test_ghost_group_change_states(dummy_game_state_with_entities_and_objects):
+    game_state = dummy_game_state_with_entities_and_objects
+    ghost_group = game_state.get_ghost_group()
+    assert_all_ghosts_have_state(ghost_group, GhostBehaviour.SCATTER)
+    ghost_group.start_chase()
+    assert_all_ghosts_have_state(ghost_group, GhostBehaviour.CHASE)
+    ghost_group.start_freight()
+    assert_all_ghosts_have_state(ghost_group, GhostBehaviour.FRIGHT)
 
 
 def use_monkeypatch_on_ghosts(monkeypatch, ghost_group: GhostGroup, attribute: str, value):

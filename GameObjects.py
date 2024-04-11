@@ -51,7 +51,7 @@ class GameObject:
         else:
             return pygame.Rect(self._position.x, self._position.y, self._size, self._size)
 
-    def set_position(self, position: Position | tuple | list):
+    def set_screen_position(self, position: Position | tuple | list):
         self._position.x = position[0]
         self._position.y = position[1]
 
@@ -147,9 +147,9 @@ class Entity(GameObject):
         """
         center = self.get_screen_center_position()
         if center.x < 0:
-            self.set_position((self._renderer.SCREEN_WIDTH - self._half_size, self.get_y()))
+            self.set_screen_position((self._renderer.SCREEN_WIDTH - self._half_size, self.get_y()))
         elif center.x > self._renderer.SCREEN_WIDTH:
-            self.set_position((-self._half_size, self.get_y()))
+            self.set_screen_position((-self._half_size, self.get_y()))
 
     def collides_with_wall(self) -> bool:
         """

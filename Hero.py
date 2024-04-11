@@ -52,7 +52,7 @@ class Hero(Entity):
         self.move_in_direction(direction)
 
         if self.collides_with_wall():
-            self.set_position(prev_position)
+            self.set_screen_position(prev_position)
             return False
         else:
             return True
