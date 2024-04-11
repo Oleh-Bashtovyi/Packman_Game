@@ -57,3 +57,9 @@ def test_position_distance(x1, y1, x2, y2, expect):
     pos_2 = Position(x2, y2)
     dist = pos_1.distance_to(pos_2)
     assert almost_equal(dist, expect, 10e-4)
+
+
+def test_position_get_item_exception():
+    pos = Position(1, 2)
+    with pytest.raises(IndexError):
+        val = pos[2]
