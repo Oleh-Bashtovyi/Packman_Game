@@ -1,6 +1,6 @@
 import pytest
 
-from tests.test_helpers import almost_equal, controller_has_state_and_time_left
+from tests.helpers import almost_equal, controller_has_state_and_time_left
 from ModeController import ModeController
 from Constants import GhostBehaviour
 

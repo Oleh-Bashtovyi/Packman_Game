@@ -18,11 +18,12 @@ class Ghost(Entity):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
+                 mode_controller: ModeController,
                  pacman=None,
                  obj_color: Tuple[int, int, int] = (255, 0, 0),
                  entity_image=None):
         super().__init__(game_state, screen_position, obj_size, obj_color, is_circle=False, entity_image=entity_image)
-        self._mode_controller: ModeController = ModeController()
+        self._mode_controller: ModeController = mode_controller
         self._fright_image = pygame.transform.scale(pygame.image.load(SCARED_GHOST), (self._size, self._size))
         self._dead_image = pygame.transform.scale(pygame.image.load(DEAD_GHOST), (self._size, self._size))
         self._alive_image = pygame.transform.scale(pygame.image.load(entity_image), (self._size, self._size))
@@ -203,12 +204,14 @@ class RedGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
+                 mode_controller: ModeController,
                  pacman=None):
         super().__init__(game_state,
                          screen_position,
                          spawn_position_in_grid,
                          scatter_position_in_grid,
                          obj_size=obj_size,
+                         mode_controller=mode_controller,
                          pacman=pacman,
                          entity_image=RED_GHOST)
 
@@ -220,12 +223,14 @@ class PinkGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
+                 mode_controller: ModeController,
                  pacman=None):
         super().__init__(game_state,
                          screen_position,
                          spawn_position_in_grid,
                          scatter_position_in_grid,
                          obj_size=obj_size,
+                         mode_controller=mode_controller,
                          pacman=pacman,
                          entity_image=PINK_GHOST)
 
@@ -240,6 +245,7 @@ class BlueGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
+                 mode_controller: ModeController,
                  pacman=None,
                  red_ghost: RedGhost = None):
         super().__init__(game_state,
@@ -247,6 +253,7 @@ class BlueGhost(Ghost):
                          spawn_position_in_grid,
                          scatter_position_in_grid,
                          obj_size=obj_size,
+                         mode_controller=mode_controller,
                          pacman=pacman,
                          entity_image=BLUE_GHOST)
         self._red_ghost = red_ghost
@@ -264,12 +271,14 @@ class OrangeGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
+                 mode_controller: ModeController,
                  pacman=None):
         super().__init__(game_state,
                          screen_position,
                          spawn_position_in_grid,
                          scatter_position_in_grid,
                          obj_size=obj_size,
+                         mode_controller=mode_controller,
                          pacman=pacman,
                          entity_image=ORANGE_GHOST)
 

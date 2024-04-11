@@ -46,19 +46,23 @@ if __name__ == "__main__":
     mzController = MazeController.MazeController()
     mzController.read_maze(MAZE)
     ghost_group = GhostGroup(game_state, mzController)
-
     ghosts_size = Constants.GHOST_SIZE
 
     pinky_spawn_pos = Position(12, 13)
     pinky_scatter_pos = Position(2, 27)
     pinky_screen_pos = game_state.translate_maze_to_screen(Position(12, 13))
-    pinky = PinkGhost(game_state, pinky_screen_pos, pinky_spawn_pos, pinky_scatter_pos, ghosts_size, pacman)
+    pinky_mode_controller = ModeController(10, 40, 10, GhostBehaviour.SCATTER)
+    pinky = PinkGhost(game_state, pinky_screen_pos, pinky_spawn_pos, pinky_scatter_pos,
+                      ghosts_size, pinky_mode_controller, pacman)
 
     red_spawn_pos = Position(13, 13)
     red_scatter_pos = Position(2, 2)
     red_screen_pos = game_state.translate_maze_to_screen(Position(13, 13))
-    red = RedGhost(game_state, red_screen_pos, red_spawn_pos, red_scatter_pos, ghosts_size, pacman)
+    red_mode_controller = ModeController(10, 40, 10, GhostBehaviour.CHASE)
+    red = RedGhost(game_state, red_screen_pos, red_spawn_pos, red_scatter_pos,
+                   ghosts_size, red_mode_controller, pacman)
 
+    #КОРОТШЕ ДОРОБИТЕ ДЛЯ ІНШИХ ПРИВИДІВ САМІ
 
 
     # ghostGroup = GhostGroup(game_state, pacman, Constants.GHOST_SIZE, mzController,

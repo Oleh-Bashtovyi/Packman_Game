@@ -48,7 +48,7 @@ class Hero(Entity):
         without actually moving and allows you to perform appropriate actions depending 
         on the result of this attempted movement
         """
-        prev_position = self.get_position()
+        prev_position = self.get_screen_position()
         self.move_in_direction(direction)
 
         if self.collides_with_wall():

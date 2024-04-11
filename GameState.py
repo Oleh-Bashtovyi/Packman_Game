@@ -27,7 +27,7 @@ class GameState:
 
     def tick(self, in_fps: int):
         black = (0, 0, 0)
-        self._ghost_group.start_scatter()
+        #self._ghost_group.start_scatter()
         pygame.time.set_timer(self._mouth_open_close_event, 200)  # open close mouth
         while not self._done:
 

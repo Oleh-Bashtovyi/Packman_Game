@@ -1,5 +1,5 @@
 from Position import Position
-from tests.test_helpers import almost_equal
+from tests.helpers import almost_equal
 import pytest
 
 
