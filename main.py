@@ -19,7 +19,7 @@ def parse_args():
 def fill_gamestate_with_static_objects(game_state: GameState, MAZE):
     for i, row in enumerate(MAZE):
         for j, column in enumerate(row):
-            vect = Constants.translate_maze_to_screen((j, i))
+            vect = game_state.translate_maze_to_screen((j, i))
             if MAZE[i][j] == "X":
                 wall = Wall(game_state, vect)
                 game_state.add_wall(wall)
