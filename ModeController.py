@@ -12,6 +12,8 @@ class ModeController:
         self._chase_time = chase_time
         self._fright_time = fright_time
         self._current_state = initial_state
+        self._time = 0
+        self._timer = 0
         self._update_time()
         self.reset_timer()
 

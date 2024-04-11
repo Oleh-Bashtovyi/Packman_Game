@@ -1,7 +1,7 @@
 import pytest
 
 from GameState import GameState
-from main import fill_gamestate
+from main import fill_gamestate_with_static_objects
 from Position import Position
 from Hero import Hero
 from MazeController import MazeController
@@ -58,7 +58,7 @@ def dummy_maze_ghsot_spawn_position(dummy_maze_ghosts_scatter_position):
 def dummy_game_state(game_state_arguments_for_dummy_maze, dummy_maze):
     tile_size, width, height = game_state_arguments_for_dummy_maze
     game_state = GameState(tile_size, height, width)
-    fill_gamestate(game_state, dummy_maze)
+    fill_gamestate_with_static_objects(game_state, dummy_maze)
     return game_state
 
 

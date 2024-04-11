@@ -169,7 +169,7 @@ class Ghost(Entity):
 
     def _get_movable_directions(self) -> list[(Direction, Position)]:
         """
-        Retruns all movable directions from
+        Returns all movable directions from
         current position and excludes direction to
         move back.
         """
@@ -281,46 +281,13 @@ class OrangeGhost(Ghost):
 
 
 class GhostGroup:
-    def __init__(self, game_state, packman, ghost_size: int, maze_controller: MazeController,
-                 red_ghost_spawn_position: Position, red_ghost_scatter_position: Position,
-                 pink_ghost_spawn_position: Position, pink_ghost_scatter_position: Position,
-                 blue_ghost_spawn_position: Position, blue_ghost_scatter_position: Position,
-                 orange_ghost_spawn_position: Position, orange_ghost_scatter_position: Position):
-        red_screen_position = game_state.translate_maze_to_screen(red_ghost_spawn_position)
-        pink_screen_position = game_state.translate_maze_to_screen(pink_ghost_spawn_position)
-        blue_screen_position = game_state.translate_maze_to_screen(blue_ghost_spawn_position)
-        orange_screen_position = game_state.translate_maze_to_screen(orange_ghost_spawn_position)
-        self.maze_controller = maze_controller
-        self._red_ghost: RedGhost = RedGhost(game_state,
-                                             red_screen_position,
-                                             red_ghost_spawn_position,
-                                             red_ghost_scatter_position,
-                                             ghost_size, packman)
-        self._pink_ghost: PinkGhost = PinkGhost(game_state,
-                                                pink_screen_position,
-                                                pink_ghost_spawn_position,
-                                                pink_ghost_scatter_position,
-                                                ghost_size, packman)
-        self._blue_ghost: BlueGhost = BlueGhost(game_state,
-                                                blue_screen_position,
-                                                blue_ghost_spawn_position,
-                                                blue_ghost_scatter_position,
-                                                ghost_size,
-                                                packman, self._red_ghost)
-        self._orange_ghost: OrangeGhost = OrangeGhost(game_state,
-                                                      orange_screen_position,
-                                                      orange_ghost_spawn_position,
-                                                      orange_ghost_scatter_position,
-                                                      ghost_size, packman)
-        self._ghosts: Tuple[Ghost, Ghost, Ghost, Ghost] = (
-            self._red_ghost,
-            self._pink_ghost,
-            self._orange_ghost,
-            self._blue_ghost)
+    def __init__(self, game_state, maze_controller: MazeController):
         self._current_points: int = ScoreType.GHOST.value
+        self.maze_controller = maze_controller
+        self._ghosts = []
 
-    # def add_ghost(self, ghost: Ghost):
-    #     self._ghosts.
+    def add_ghost(self, ghost: Ghost):
+        self._ghosts.append(ghost)
 
     def draw(self):
         for ghost in self._ghosts:
@@ -330,7 +297,7 @@ class GhostGroup:
         for ghost in self._ghosts:
             ghost.tick(dt)
 
-    def get_ghosts(self) -> tuple[Ghost]:
+    def get_ghosts(self) -> list[Ghost]:
         return self._ghosts[:]
 
     def update_points(self):
