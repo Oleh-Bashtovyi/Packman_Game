@@ -1,8 +1,7 @@
 import pygame
 
-from GameObjects import GameObject, Wall, Powerup, Entity, Apple
+from GameObjects import GameObject
 from GameState import GameState
-from Position import Position
 
 
 def test_position_manipulation():
@@ -30,3 +29,4 @@ def test_grid_position():
 
     some_object.set_screen_position((48, 72))
     assert some_object.get_grid_position() == [2, 2]
+
