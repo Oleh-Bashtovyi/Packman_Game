@@ -10,7 +10,7 @@ class Hero(Entity):
                  game_state,
                  screen_position: Position,
                  hero_size: int = PACMAN_SIZE):
-        super().__init__(game_state, screen_position, hero_size, (255, 255, 0), False)
+        super().__init__(game_state, screen_position, hero_size, (255, 255, 0), False, None)
         self.buffer_direction = self._current_direction
         self.open = pygame.transform.scale(pygame.image.load(PACMAN_MOUTH_OPEN), (self._size, self._size))
         self.closed = pygame.transform.scale(pygame.image.load(PACMAN_MOUTH_CLOSED), (self._size, self._size))
@@ -48,11 +48,11 @@ class Hero(Entity):
         without actually moving and allows you to perform appropriate actions depending 
         on the result of this attempted movement
         """
-        prev_position = self.get_position()
+        prev_position = self.get_screen_position()
         self.move_in_direction(direction)
 
         if self.collides_with_wall():
-            self.set_position(prev_position)
+            self.set_screen_position(prev_position)
             return False
         else:
             return True

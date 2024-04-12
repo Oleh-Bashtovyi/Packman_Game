@@ -18,11 +18,12 @@ class Ghost(Entity):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
+                 mode_controller: ModeController,
                  pacman=None,
                  obj_color: Tuple[int, int, int] = (255, 0, 0),
-                 entity_image=RED_GHOST):
+                 entity_image=None):
         super().__init__(game_state, screen_position, obj_size, obj_color, is_circle=False, entity_image=entity_image)
-        self._mode_controller: ModeController = ModeController()
+        self._mode_controller: ModeController = mode_controller
         self._fright_image = pygame.transform.scale(pygame.image.load(SCARED_GHOST), (self._size, self._size))
         self._dead_image = pygame.transform.scale(pygame.image.load(DEAD_GHOST), (self._size, self._size))
         self._alive_image = pygame.transform.scale(pygame.image.load(entity_image), (self._size, self._size))
@@ -120,7 +121,7 @@ class Ghost(Entity):
     def _handle_states(self):
         """
         Handles mode controller current states
-        and sets apropriate followed targets.
+        and sets appropriate followed targets.
         """
         state = self._mode_controller.get_current_state()
         if state is GhostBehaviour.SPAWN:
@@ -133,8 +134,6 @@ class Ghost(Entity):
         elif state is GhostBehaviour.CHASE:
             self._set_chase_target()
 
-    # методи, які будуть використовуватись для різних станів привидів.
-    # В стані страху буде використовуватись метод випадкового напряму.
     def _move_to_target_method(self):
         """
         Method that selects and set direction that
@@ -203,12 +202,14 @@ class RedGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
+                 mode_controller: ModeController,
                  pacman=None):
         super().__init__(game_state,
                          screen_position,
                          spawn_position_in_grid,
                          scatter_position_in_grid,
                          obj_size=obj_size,
+                         mode_controller=mode_controller,
                          pacman=pacman,
                          entity_image=RED_GHOST)
 
@@ -220,12 +221,14 @@ class PinkGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
+                 mode_controller: ModeController,
                  pacman=None):
         super().__init__(game_state,
                          screen_position,
                          spawn_position_in_grid,
                          scatter_position_in_grid,
                          obj_size=obj_size,
+                         mode_controller=mode_controller,
                          pacman=pacman,
                          entity_image=PINK_GHOST)
 
@@ -240,6 +243,7 @@ class BlueGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
+                 mode_controller: ModeController,
                  pacman=None,
                  red_ghost: RedGhost = None):
         super().__init__(game_state,
@@ -247,6 +251,7 @@ class BlueGhost(Ghost):
                          spawn_position_in_grid,
                          scatter_position_in_grid,
                          obj_size=obj_size,
+                         mode_controller=mode_controller,
                          pacman=pacman,
                          entity_image=BLUE_GHOST)
         self._red_ghost = red_ghost
@@ -264,12 +269,14 @@ class OrangeGhost(Ghost):
                  spawn_position_in_grid: Position,
                  scatter_position_in_grid: Position,
                  obj_size: int,
+                 mode_controller: ModeController,
                  pacman=None):
         super().__init__(game_state,
                          screen_position,
                          spawn_position_in_grid,
                          scatter_position_in_grid,
                          obj_size=obj_size,
+                         mode_controller=mode_controller,
                          pacman=pacman,
                          entity_image=ORANGE_GHOST)
 
@@ -283,7 +290,7 @@ class OrangeGhost(Ghost):
 class GhostGroup:
     def __init__(self, game_state, maze_controller: MazeController):
         self._current_points: int = ScoreType.GHOST.value
-        self.maze_controller = maze_controller
+        self.maze_controller: MazeController = maze_controller
         self._ghosts = []
 
     def add_ghost(self, ghost: Ghost):

@@ -62,7 +62,9 @@ POWERUP_COLOR = (255, 255, 255)
 
 # Images
 def __get_relative_image_path(filename):
-    return os.path.join("images", filename)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(base_dir, "images", filename)
+    #return os.path.join("images", filename)
 
 
 def set_scale_factor(scale_factor):

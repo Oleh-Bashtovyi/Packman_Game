@@ -27,7 +27,7 @@ class GameState:
 
     def tick(self, in_fps: int):
         black = (0, 0, 0)
-        self._ghost_group.start_scatter()
+        #self._ghost_group.start_scatter()
         pygame.time.set_timer(self._mouth_open_close_event, 200)  # open close mouth
         while not self._done:
 
@@ -99,7 +99,7 @@ class GameState:
 
     def kill_pacman(self):
         self._lives -= 1
-        self._hero.set_position(Position(self.TILE_SIZE, self.TILE_SIZE))
+        self._hero.set_screen_position(Position(self.TILE_SIZE, self.TILE_SIZE))
         self._hero.set_direction(Direction.NONE)
         if self._lives == 0: self.end_game()
 
@@ -127,6 +127,9 @@ class GameState:
     def add_hero(self, in_hero):
         self.add_game_object(in_hero)
         self._hero = in_hero
+
+    def get_hero(self) -> Hero:
+        return self._hero
 
     def _handle_events(self):
         for event in pygame.event.get():

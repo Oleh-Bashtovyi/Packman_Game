@@ -27,7 +27,7 @@ class GameObject:
         """
         if self._circle:
             tile_half = self._renderer.TILE_HALF
-            pygame.draw.circle(self._surface, self._color, self.get_position() + [tile_half, tile_half], self._size)
+            pygame.draw.circle(self._surface, self._color, self.get_screen_position() + [tile_half, tile_half], self._size)
         else:
             rect_object = pygame.Rect(self._position.x, self._position.y, self._size, self._size)
             pygame.draw.rect(self._surface, self._color, rect_object, border_radius=3)
@@ -51,14 +51,14 @@ class GameObject:
         else:
             return pygame.Rect(self._position.x, self._position.y, self._size, self._size)
 
-    def set_position(self, position: Position | tuple | list):
+    def set_screen_position(self, position: Position | tuple | list):
         self._position.x = position[0]
         self._position.y = position[1]
 
-    def get_position(self) -> Position:
+    def get_screen_position(self) -> Position:
         return Position(self._position.x, self._position.y)
 
-    def get_center_position(self) -> Position:
+    def get_screen_center_position(self) -> Position:
         return self._position + [self._half_size, self._half_size]
 
     def get_grid_position(self) -> Position:
@@ -66,7 +66,7 @@ class GameObject:
         Returns position of object in renderer field.
         :return: Grid position
         """
-        center = self.get_center_position()
+        center = self.get_screen_center_position()
         x = center.x // self._renderer.TILE_SIZE
         y = center.y // self._renderer.TILE_SIZE
         return Position(x, y)
@@ -102,10 +102,14 @@ class Entity(GameObject):
                  obj_size: int,
                  obj_color: Tuple[int, int, int] = (255, 0, 0),
                  is_circle: bool = False,
-                 entity_image=RED_GHOST):
+                 entity_image=None):
         super().__init__(game_state, screen_position, obj_size, obj_color, is_circle)
         self._current_direction = Direction.NONE
-        self._entity_image = pygame.transform.scale(pygame.image.load(entity_image), (self._size, self._size))
+
+        if entity_image is not None:
+            self._entity_image = pygame.transform.scale(pygame.image.load(entity_image), (self._size, self._size))
+        else:
+            self._entity_image = None
 
     def tick(self, dt):
         """
@@ -116,7 +120,8 @@ class Entity(GameObject):
         pass
 
     def draw(self):
-        self._surface.blit(self._entity_image, self.get_shape())
+        if self._entity_image is not None:
+            self._surface.blit(self._entity_image, self.get_shape())
 
     def move_in_current_direction(self):
         self.move_in_direction(self._current_direction)
@@ -140,11 +145,11 @@ class Entity(GameObject):
         Handles horizontal entity teleportation.
         Depend on gamestate.
         """
-        center = self.get_center_position()
+        center = self.get_screen_center_position()
         if center.x < 0:
-            self.set_position((self._renderer.SCREEN_WIDTH - self._half_size, self.get_y()))
+            self.set_screen_position((self._renderer.SCREEN_WIDTH - self._half_size, self.get_y()))
         elif center.x > self._renderer.SCREEN_WIDTH:
-            self.set_position((-self._half_size, self.get_y()))
+            self.set_screen_position((-self._half_size, self.get_y()))
 
     def collides_with_wall(self) -> bool:
         """
@@ -160,6 +165,3 @@ class Entity(GameObject):
             if collides:
                 break
         return collides
-
-
-
