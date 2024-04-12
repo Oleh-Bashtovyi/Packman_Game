@@ -121,7 +121,7 @@ class Ghost(Entity):
     def _handle_states(self):
         """
         Handles mode controller current states
-        and sets apropriate followed targets.
+        and sets appropriate followed targets.
         """
         state = self._mode_controller.get_current_state()
         if state is GhostBehaviour.SPAWN:
@@ -134,8 +134,6 @@ class Ghost(Entity):
         elif state is GhostBehaviour.CHASE:
             self._set_chase_target()
 
-    # методи, які будуть використовуватись для різних станів привидів.
-    # В стані страху буде використовуватись метод випадкового напряму.
     def _move_to_target_method(self):
         """
         Method that selects and set direction that
@@ -292,7 +290,7 @@ class OrangeGhost(Ghost):
 class GhostGroup:
     def __init__(self, game_state, maze_controller: MazeController):
         self._current_points: int = ScoreType.GHOST.value
-        self.maze_controller = maze_controller
+        self.maze_controller: MazeController = maze_controller
         self._ghosts = []
 
     def add_ghost(self, ghost: Ghost):
