@@ -37,4 +37,8 @@ def test_add_neighbour():
     node1.add_neighbour(Direction.RIGHT, node2)
     assert node1._neighbours[Direction.RIGHT] == node2
 
+def test_add_node(empty_maze_controller):
+    empty_maze_controller.add_node(Position(2, 3))
+    assert Position(2, 3) in empty_maze_controller.nodes
+
 
