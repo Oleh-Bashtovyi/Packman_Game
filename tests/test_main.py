@@ -76,3 +76,13 @@ def test_add_ghost_to_group():
     ghost_group.add_ghost(pinky)
     assert len(ghost_group.get_ghosts()) == 1
 
+def test_get_ghosts_from_group():
+    game_state = GameState(10, 3, 3)
+    MAZE = [['X', ' ', 'U'],
+            [' ', 'X', ' '],
+            ['X', 'X', 'X']]
+    fill_gamestate_with_static_objects(game_state, MAZE)
+    mzController = MazeController.MazeController()
+    mzController.read_maze(MAZE)
+    ghost_group = GhostGroup(game_state, mzController)
+    assert isinstance(ghost_group.get_ghosts(), list)
