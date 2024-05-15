@@ -45,3 +45,16 @@ def test_add_edge(maze_controller_with_nodes):
     maze_controller_with_nodes.add_edge(Position(0, 0), Position(1, 0), Direction.RIGHT)
     assert maze_controller_with_nodes.nodes[Position(0, 0)]._neighbours[Direction.RIGHT]
 
+def test_read_maze():
+    controller = MazeController()
+    maze = [
+        ['.', '.', '.'],
+        ['X', 'X', '.'],
+        ['.', '.', '.']
+    ]
+    controller.read_maze(maze)
+    assert Position(0, 0) in controller.nodes
+    assert Position(2, 2) in controller.nodes
+    assert controller.nodes[Position(0, 0)]._neighbours.get(Direction.RIGHT) is not None
+    assert controller.nodes[Position(0, 0)]._neighbours.get(Direction.DOWN) is None
+
