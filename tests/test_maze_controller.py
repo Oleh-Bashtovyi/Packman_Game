@@ -27,5 +27,14 @@ def test_get_position():
     node = MazeNode(3, 4)
     assert node.get_position() == Position(3, 4)
 
+def test_node_creation():
+    node = MazeNode(2, 3)
+    assert node.get_position() == Position(2, 3)
+
+def test_add_neighbour():
+    node1 = MazeNode(0, 0)
+    node2 = MazeNode(1, 0)
+    node1.add_neighbour(Direction.RIGHT, node2)
+    assert node1._neighbours[Direction.RIGHT] == node2
 
 
