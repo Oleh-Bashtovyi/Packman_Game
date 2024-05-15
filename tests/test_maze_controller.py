@@ -23,4 +23,9 @@ def test_get_walkable_positions():
     expected_positions = [(Direction.RIGHT, Position(1, 0)), (Direction.DOWN, Position(0, 1))]
     assert node1.get_walkable_positions() == expected_positions
 
+def test_get_position():
+    node = MazeNode(3, 4)
+    assert node.get_position() == Position(3, 4)
+
+
 
