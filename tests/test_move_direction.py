@@ -1,7 +1,5 @@
 from unittest.mock import MagicMock
-from GameObjects import Entity
 from Direction import Direction
-from Constants import ScoreType, GhostBehaviour, PACMAN_SIZE, PACMAN_MOUTH_OPEN, PACMAN_MOUTH_CLOSED
 from Position import Position
 from Hero import Hero 
 from GameState import GameState
