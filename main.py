@@ -55,6 +55,7 @@ if __name__ == "__main__":
     pinky = PinkGhost(game_state, pinky_screen_pos, pinky_spawn_pos, pinky_scatter_pos,
                       ghosts_size, pinky_mode_controller, pacman)
 
+
     red_spawn_pos = Position(13, 13)
     red_scatter_pos = Position(2, 2)
     red_screen_pos = game_state.translate_maze_to_screen(Position(13, 13))
@@ -62,17 +63,26 @@ if __name__ == "__main__":
     red = RedGhost(game_state, red_screen_pos, red_spawn_pos, red_scatter_pos,
                    ghosts_size, red_mode_controller, pacman)
 
-    #КОРОТШЕ ДОРОБИТЕ ДЛЯ ІНШИХ ПРИВИДІВ САМІ
+    blue_spawn_pos = Position(14, 13)
+    blue_scatter_pos = Position(30, 2)
+    blue_screen_pos = game_state.translate_maze_to_screen(Position(13, 13))
+    blue_mode_controller = ModeController(10, 40, 10, GhostBehaviour.SCATTER)
+    blue = BlueGhost(game_state, blue_screen_pos, blue_spawn_pos, blue_scatter_pos,
+                   ghosts_size, blue_mode_controller, pacman)
+
+    orange_spawn_pos = Position(15, 13)
+    orange_scatter_pos = Position(30, 27)
+    orange_screen_pos = game_state.translate_maze_to_screen(Position(13, 13))
+    orange_mode_controller = ModeController(10, 40, 10, GhostBehaviour.SCATTER)
+    orange = OrangeGhost(game_state, orange_screen_pos, orange_spawn_pos, orange_scatter_pos,
+                   ghosts_size, orange_mode_controller, pacman)
 
 
-    # ghostGroup = GhostGroup(game_state, pacman, Constants.GHOST_SIZE, mzController,
-    #                         Position(12, 13), Position(2, 27),
-    #                         Position(13, 13), Position(2, 2),
-    #                         Position(14, 13), Position(30, 2),
-    #                         Position(15, 13), Position(30, 27))
 
     ghost_group.add_ghost(pinky)
     ghost_group.add_ghost(red)
+    ghost_group.add_ghost(blue)
+    ghost_group.add_ghost(orange)
     game_state.add_hero(pacman)
     game_state.set_ghost_group(ghost_group)
     game_state.tick(Constants.FPS)
