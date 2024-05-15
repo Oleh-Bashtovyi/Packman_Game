@@ -20,3 +20,9 @@ def hero(game_state):
     hero._renderer = MagicMock()
     return hero
 
+def test_try_move_in_direction_collision(hero):
+    prev_position = hero.get_screen_position()
+    hero.collides_with_wall = lambda: True
+    hero._try_move_in_direction(Direction.UP)
+    assert hero.get_screen_position() == prev_position
+
