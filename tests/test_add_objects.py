@@ -20,3 +20,8 @@ def test_add_game_object(game_state):
     game_state.add_game_object(obj)
     assert obj in game_state.get_game_objects()
 
+def test_add_apple(game_state):
+    obj_size = 10  
+    apple = GameObject(game_state, Position(1, 1), obj_size) 
+    game_state.add_apple(apple)
+    assert apple in game_state.get_cookies()
