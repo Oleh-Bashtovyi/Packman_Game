@@ -32,3 +32,8 @@ def test_try_move_in_direction_no_collision(hero):
     hero._try_move_in_direction(Direction.UP)
     assert hero.get_screen_position() != prev_position
 
+def test_set_direction(hero):
+    hero.set_direction(Direction.DOWN)
+    assert hero.buffer_direction == Direction.DOWN
+
+
