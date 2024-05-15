@@ -46,5 +46,16 @@ def test_fill_apples():
     assert len(game_state.get_cookies()) == 3
 
 
+def test_create_ghost_group_instance():
+    game_state = GameState(10, 3, 3)
+    MAZE = [['X', ' ', 'U'],
+            [' ', 'X', ' '],
+            ['X', 'X', 'X']]
+    fill_gamestate_with_static_objects(game_state, MAZE)
+    mzController = MazeController.MazeController()
+    mzController.read_maze(MAZE)
+    ghost_group = GhostGroup(game_state, mzController)
+    assert isinstance(ghost_group, GhostGroup)
+
 
 
