@@ -27,6 +27,11 @@ def test_handle_cookie_pickup_empty(hero, game_state):
     hero.handle_cookie_pickup()
     assert initial_score == game_state._score
 
+def test_handle_ghosts_fright(hero, game_state):
+    initial_score = game_state._score
+    hero.handle_ghosts()
+    assert initial_score == game_state._score
+
 
 
 
