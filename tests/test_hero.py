@@ -22,6 +22,10 @@ def test_draw(hero):
     hero.draw()
     assert hero._entity_image != initial_image
 
+def test_handle_cookie_pickup_empty(hero, game_state):
+    initial_score = game_state._score
+    hero.handle_cookie_pickup()
+    assert initial_score == game_state._score
 
 
 
