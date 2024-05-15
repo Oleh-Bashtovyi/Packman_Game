@@ -37,3 +37,14 @@ def test_fill_powerups():
     fill_gamestate_with_static_objects(game_state, MAZE)
     assert len(game_state.get_powerups()) == 1
 
+def test_fill_apples():
+    game_state = GameState(10, 3, 3)
+    MAZE = [['X', ' ', 'U'],
+            [' ', 'X', ' '],
+            ['X', 'X', 'X']]
+    fill_gamestate_with_static_objects(game_state, MAZE)
+    assert len(game_state.get_cookies()) == 3
+
+
+
+
