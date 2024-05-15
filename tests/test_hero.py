@@ -37,7 +37,16 @@ def test_handle_ghosts_spawn(hero, game_state):
     hero.handle_ghosts()
     assert initial_lives == game_state._lives
 
-
+def test_handle_ghosts(hero):
+    collision_rect = MagicMock()
+    ghost1 = MagicMock()
+    ghost2 = MagicMock()
+    ghost1.get_shape.return_value = MagicMock()
+    ghost2.get_shape.return_value = MagicMock()
+    ghosts = [ghost1, ghost2]
+    hero.get_shape = MagicMock(return_value=collision_rect)
+    hero._renderer.get_ghost_group.return_value.get_ghosts.return_value = ghosts
+    hero.handle_ghosts()
 
 
 
