@@ -13,16 +13,20 @@ from Ghosts import PinkGhost
 
 
 def test_parse_args():
-
-    # Створюємо об'єкт парсера
     parser = argparse.ArgumentParser()
     parser.add_argument('--fps', type=int)
     parser.add_argument('--sclf', type=int)
-
-    # Парсимо аргументи
     args = parser.parse_args(['--fps', '60', '--sclf', '2'])
 
-    # Перевіряємо, чи правильно вони були розпарсені
     assert args.fps == 60
     assert args.sclf == 2
+
+def test_fill_walls():
+    game_state = GameState(10, 3, 3)
+    MAZE = [['X', ' ', 'U'],
+            [' ', 'X', ' '],
+            ['X', 'X', 'X']]
+    fill_gamestate_with_static_objects(game_state, MAZE)
+    assert len(game_state.get_walls()) == 5
+
 
