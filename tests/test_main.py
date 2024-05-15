@@ -57,5 +57,22 @@ def test_create_ghost_group_instance():
     ghost_group = GhostGroup(game_state, mzController)
     assert isinstance(ghost_group, GhostGroup)
 
-
+def test_add_ghost_to_group():
+    game_state = GameState(10, 3, 3)
+    MAZE = [['X', ' ', 'U'],
+            [' ', 'X', ' '],
+            ['X', 'X', 'X']]
+    fill_gamestate_with_static_objects(game_state, MAZE)
+    pacman = Hero(game_state, game_state.translate_maze_to_screen(Position(1, 1)), Constants.PACMAN_SIZE)
+    mzController = MazeController.MazeController()
+    mzController.read_maze(MAZE)
+    ghost_group = GhostGroup(game_state, mzController)
+    pinky_spawn_pos = Position(12, 13)
+    pinky_scatter_pos = Position(2, 27)
+    pinky_screen_pos = game_state.translate_maze_to_screen(Position(12, 13))
+    pinky_mode_controller = ModeController.ModeController(10, 40, 10, Constants.GhostBehaviour.SCATTER)
+    pinky = PinkGhost(game_state, pinky_screen_pos, pinky_spawn_pos, pinky_scatter_pos,
+                      Constants.GHOST_SIZE, pinky_mode_controller, pacman)
+    ghost_group.add_ghost(pinky)
+    assert len(ghost_group.get_ghosts()) == 1
 
