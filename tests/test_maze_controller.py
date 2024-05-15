@@ -58,3 +58,9 @@ def test_read_maze():
     assert controller.nodes[Position(0, 0)]._neighbours.get(Direction.RIGHT) is not None
     assert controller.nodes[Position(0, 0)]._neighbours.get(Direction.DOWN) is None
 
+def test_get_node_at_position(maze_controller_with_nodes):
+    assert maze_controller_with_nodes.get_node_at_position(Position(0, 0)).get_position() == Position(0, 0)
+    assert maze_controller_with_nodes.get_node_at_position(Position(1, 0)).get_position() == Position(1, 0)
+    assert maze_controller_with_nodes.get_node_at_position(Position(0, 1)).get_position() == Position(0, 1)
+    assert maze_controller_with_nodes.get_node_at_position(Position(2, 2)) is None
+
