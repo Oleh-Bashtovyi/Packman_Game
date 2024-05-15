@@ -32,6 +32,11 @@ def test_handle_ghosts_fright(hero, game_state):
     hero.handle_ghosts()
     assert initial_score == game_state._score
 
+def test_handle_ghosts_spawn(hero, game_state):
+    initial_lives = game_state._lives
+    hero.handle_ghosts()
+    assert initial_lives == game_state._lives
+
 
 
 
