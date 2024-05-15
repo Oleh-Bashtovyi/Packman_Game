@@ -26,3 +26,9 @@ def test_try_move_in_direction_collision(hero):
     hero._try_move_in_direction(Direction.UP)
     assert hero.get_screen_position() == prev_position
 
+def test_try_move_in_direction_no_collision(hero):
+    prev_position = hero.get_screen_position()
+    hero.collides_with_wall = lambda: False
+    hero._try_move_in_direction(Direction.UP)
+    assert hero.get_screen_position() != prev_position
+
