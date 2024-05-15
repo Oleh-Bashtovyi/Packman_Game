@@ -41,4 +41,7 @@ def test_add_node(empty_maze_controller):
     empty_maze_controller.add_node(Position(2, 3))
     assert Position(2, 3) in empty_maze_controller.nodes
 
+def test_add_edge(maze_controller_with_nodes):
+    maze_controller_with_nodes.add_edge(Position(0, 0), Position(1, 0), Direction.RIGHT)
+    assert maze_controller_with_nodes.nodes[Position(0, 0)]._neighbours[Direction.RIGHT]
 
