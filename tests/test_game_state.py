@@ -61,3 +61,6 @@ def test_kill_pacman(game_state):
     assert game_state._hero._position == Position(game_state.TILE_SIZE, game_state.TILE_SIZE) 
 
 
+def test_set_won(game_state):
+    game_state.set_won()
+    assert game_state.get_won() == True
