@@ -31,3 +31,9 @@ def test_add_powerup(game_state):
     powerup = GameObject(game_state, Position(1, 1), obj_size) 
     game_state.add_powerup(powerup)
     assert powerup in game_state.get_powerups()
+
+def test_add_hero(game_state):
+    hero = Hero(game_state, Position(1, 1), 20) 
+    game_state.add_hero(hero)
+    assert game_state.get_hero() == hero
+
