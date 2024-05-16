@@ -24,3 +24,19 @@ def test_end_game(game_state):
     game_state.end_game()
     assert game_state.get_hero() == None
 
+
+def test_handle_events(game_state):
+    event_quit = pygame.event.Event(QUIT)
+    event_keydown = pygame.event.Event(pygame.KEYDOWN, {'key': K_UP})
+
+    pygame.event.post(event_quit)
+    pygame.event.post(event_keydown)
+
+    game_state._handle_events()
+
+    assert game_state._done == True
+    hero = game_state.get_hero()
+    if hero is not None:
+        assert hero.direction == Direction.UP
+
+
