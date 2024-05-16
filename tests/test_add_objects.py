@@ -5,6 +5,7 @@ from Ghosts import *
 from GameState import *
 from GameObjects import GameObject, Position
 
+
 @pytest.fixture
 def game_state():
     return GameState(tile_size=32, maze_height=20, maze_width=20)
@@ -41,3 +42,8 @@ def test_add_wall(game_state):
     wall = Wall(game_state, Position(1, 1))
     game_state.add_wall(wall)
     assert wall in game_state.get_walls()
+
+def test_add_score(game_state):
+    initial_score = game_state._score
+    game_state.add_score(10)
+    assert game_state._score == initial_score + 10
