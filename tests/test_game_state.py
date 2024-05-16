@@ -53,13 +53,13 @@ def test_display_text(game_state):
     assert game_state._screen.blit(text_surface, position) == pygame.Rect(position, (100, 50))
 
 def test_kill_pacman(game_state):
-    game_state._lives = 3  
-    game_state._hero = GameObject(game_state, Position(0, 0), 10, obj_color=(255, 0, 0), is_circle=False)  
+    game_state._lives = 3 
+    game_state._hero = Hero(game_state, Position(0, 0))  
     game_state.kill_pacman()
 
     assert game_state._lives == 2 
     assert game_state._hero._position == Position(game_state.TILE_SIZE, game_state.TILE_SIZE) 
-
+    assert game_state._hero.buffer_direction == Direction.NONE  
 
 def test_set_won(game_state):
     game_state.set_won()
