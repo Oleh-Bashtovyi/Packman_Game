@@ -25,3 +25,9 @@ def test_add_apple(game_state):
     apple = GameObject(game_state, Position(1, 1), obj_size) 
     game_state.add_apple(apple)
     assert apple in game_state.get_cookies()
+
+def test_add_powerup(game_state):
+    obj_size = 10  
+    powerup = GameObject(game_state, Position(1, 1), obj_size) 
+    game_state.add_powerup(powerup)
+    assert powerup in game_state.get_powerups()
