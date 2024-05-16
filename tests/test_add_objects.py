@@ -37,3 +37,7 @@ def test_add_hero(game_state):
     game_state.add_hero(hero)
     assert game_state.get_hero() == hero
 
+def test_add_wall(game_state):
+    wall = Wall(game_state, Position(1, 1))
+    game_state.add_wall(wall)
+    assert wall in game_state.get_walls()
