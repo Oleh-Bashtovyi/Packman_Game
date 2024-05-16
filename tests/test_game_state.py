@@ -40,3 +40,15 @@ def test_handle_events(game_state):
         assert hero.direction == Direction.UP
 
 
+def test_display_text(game_state):
+    game_state._screen = pygame.Surface((800, 600)) 
+    text_surface = pygame.Surface((100, 50))  
+    text = "Test Message"
+    font = pygame.font.SysFont('Arial', 20)
+    text_surface.blit(font.render(text, True, (255, 255, 255)), (0, 0))  
+    position = (100, 100)  
+
+    game_state.display_text(text, position, 20)
+
+    assert game_state._screen.blit(text_surface, position) == pygame.Rect(position, (100, 50))
+
