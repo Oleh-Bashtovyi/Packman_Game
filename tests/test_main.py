@@ -31,7 +31,7 @@ def test_fill_walls():
 
 def test_fill_powerups():
     game_state = GameState(10, 3, 3)
-    MAZE = [['X', ' ', 'U'],
+    MAZE = [['X', ' ', 'P'],
             [' ', 'X', ' '],
             ['X', 'X', 'X']]
     fill_gamestate_with_static_objects(game_state, MAZE)
@@ -39,7 +39,7 @@ def test_fill_powerups():
 
 def test_fill_apples():
     game_state = GameState(10, 3, 3)
-    MAZE = [['X', ' ', 'U'],
+    MAZE = [['X', ' ', 'P'],
             [' ', 'X', ' '],
             ['X', 'X', 'X']]
     fill_gamestate_with_static_objects(game_state, MAZE)
@@ -48,7 +48,7 @@ def test_fill_apples():
 
 def test_create_ghost_group_instance():
     game_state = GameState(10, 3, 3)
-    MAZE = [['X', ' ', 'U'],
+    MAZE = [['X', ' ', 'P'],
             [' ', 'X', ' '],
             ['X', 'X', 'X']]
     fill_gamestate_with_static_objects(game_state, MAZE)

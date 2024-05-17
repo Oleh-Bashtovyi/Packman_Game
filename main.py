@@ -23,7 +23,7 @@ def fill_gamestate_with_static_objects(game_state: GameState, MAZE):
             if MAZE[i][j] == "X":
                 wall = Wall(game_state, vect)
                 game_state.add_wall(wall)
-            elif MAZE[i][j] == "U":
+            elif MAZE[i][j] == "P":
                 powerup = Powerup(game_state, vect, Constants.POWERUP_SIZE)
                 game_state.add_powerup(powerup)
             else:
